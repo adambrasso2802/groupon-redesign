@@ -49,6 +49,12 @@ export interface QuizSkippedEvent {
 // Phase 1 — Home Screen
 // ---------------------------------------------------------------------------
 
+export interface HomeScreenViewedEvent {
+  event: "home_screen_viewed";
+  /** Number of recommendation slots rendered in the feed */
+  slotCount: number;
+}
+
 export interface FeedViewedEvent {
   event: "feed_viewed";
 }
@@ -285,6 +291,7 @@ export type AnalyticsEvent =
   | QuizCompletedEvent
   | QuizSkippedEvent
   // Phase 1
+  | HomeScreenViewedEvent
   | FeedViewedEvent
   | DealCardImpressionEvent
   | DealCardTappedEvent

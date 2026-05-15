@@ -31,6 +31,7 @@ export type {
   QuizCompletedEvent,
   QuizSkippedEvent,
   // Phase 1
+  HomeScreenViewedEvent,
   FeedViewedEvent,
   DealCardImpressionEvent,
   DealCardTappedEvent,
