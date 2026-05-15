@@ -2,6 +2,7 @@ import React from "react";
 import type { Deal } from "../types/deal";
 import type { AnalyticsClient } from "../analytics/client";
 import { RefundPolicyBadge } from "./RefundPolicyBadge";
+import { BNPLPricingHint } from "./BNPLPricingHint";
 
 export interface DealCardProps {
   deal: Deal;
@@ -84,6 +85,16 @@ export function DealCard({ deal, analytics, position, onTap }: DealCardProps) {
             </span>
           )}
         </div>
+
+        {deal.bnplOptions.length > 0 && (
+          <div style={{ marginTop: 4 }}>
+            <BNPLPricingHint
+              bnplOption={deal.bnplOptions[0]}
+              dealId={deal.dealId}
+              analytics={analytics}
+            />
+          </div>
+        )}
 
         {deal.recommendation !== undefined && (
           <p data-testid="deal-card-reason" style={{ fontSize: 12, color: "#6b7280", margin: "8px 0 0" }}>

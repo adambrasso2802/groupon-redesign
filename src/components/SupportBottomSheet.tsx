@@ -3,7 +3,7 @@ import type { RefundPolicy, SupportIssueCategory } from "../types/deal";
 import type { AnalyticsClient } from "../analytics/client";
 import type { SupportAction } from "../types/analytics";
 
-export interface SupportBottomSheetProps {
+export interface SupportChatPanelProps {
   isOpen: boolean;
   onClose: () => void;
   orderId: string;
@@ -32,7 +32,7 @@ export function formatRefundDeadline(deadlineMs: number): string {
   return date.toLocaleDateString("en-GB", { day: "numeric", month: "long" });
 }
 
-export function SupportBottomSheet({
+export function SupportChatPanel({
   isOpen,
   onClose,
   orderId,
@@ -40,7 +40,7 @@ export function SupportBottomSheet({
   analytics,
   onActionSelected,
   onOpenNotificationPreferences,
-}: SupportBottomSheetProps) {
+}: SupportChatPanelProps) {
   const [view, setView] = useState<SheetView>("menu");
   const [issueCategory, setIssueCategory] = useState<SupportIssueCategory>("other");
   const [reportDescription, setReportDescription] = useState("");
@@ -71,6 +71,9 @@ export function SupportBottomSheet({
 
   function handleAction(action: SupportAction) {
     analytics.track({ event: "support_action_selected", orderId, action });
+    if (action === "contact_support") {
+      analytics.track({ event: "support_escalated_to_human", orderId });
+    }
     onActionSelected?.(action);
     if (action === "get_a_refund") setView("refund");
     else if (action === "contact_support") setView("chat");

@@ -5,6 +5,8 @@ import { RefundPolicyBadge } from "./RefundPolicyBadge";
 import { HeroImageCarousel } from "./HeroImageCarousel";
 import { PricingBreakdownPanel } from "./PricingBreakdownPanel";
 import { AvailabilityCalendar } from "./AvailabilityCalendar";
+import { InstantConfirmationBadge } from "./InstantConfirmationBadge";
+import { FinePrintExpander } from "./FinePrintExpander";
 
 export interface DealDetailScreenProps {
   deal: Deal;
@@ -28,6 +30,11 @@ export function DealDetailScreen({
 
   useEffect(() => {
     analytics.track({
+      event: "deal_viewed",
+      dealId: deal.dealId,
+      category: deal.category,
+    });
+    analytics.track({
       event: "deal_detail_viewed",
       dealId: deal.dealId,
       category: deal.category,
@@ -35,6 +42,11 @@ export function DealDetailScreen({
     // Intentionally run only on mount (dealId/category are stable identifiers)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  function handleDateSelected(dateIso: string) {
+    setSelectedDate(dateIso);
+    analytics.track({ event: "slot_selected", dealId: deal.dealId, slotIso: dateIso });
+  }
 
   function handleBuyNow() {
     analytics.track({
@@ -74,6 +86,11 @@ export function DealDetailScreen({
             ({deal.merchant.reviewCount} reviews)
           </span>
         </div>
+
+        {/* Instant confirmation badge — shown directly below merchant info */}
+        <div style={{ marginTop: 8 }}>
+          <InstantConfirmationBadge supportsInstantConfirmation={deal.supportsInstantConfirmation} />
+        </div>
       </div>
 
       {/* Pricing breakdown — always visible before the buy button */}
@@ -89,7 +106,7 @@ export function DealDetailScreen({
             availableDates={availableDates}
             dealId={deal.dealId}
             analytics={analytics}
-            onDateSelected={(dateIso) => setSelectedDate(dateIso)}
+            onDateSelected={handleDateSelected}
           />
         </div>
       )}
@@ -102,17 +119,14 @@ export function DealDetailScreen({
         <RefundPolicyBadge refundPolicy={deal.refundPolicy} />
       </div>
 
-      {/* Fine print */}
+      {/* Fine print — collapsible expander; when empty nothing is rendered */}
       {deal.finePrint.length > 0 && (
         <div style={{ padding: "16px 16px 0" }}>
-          <h2 style={{ fontSize: 16, fontWeight: 600, margin: "0 0 8px" }}>Fine Print</h2>
-          <ul data-testid="fine-print-list" style={{ paddingLeft: 20, margin: 0 }}>
-            {deal.finePrint.map((item, i) => (
-              <li key={i} style={{ fontSize: 13, color: "#6b7280", marginBottom: 4 }}>
-                {item}
-              </li>
-            ))}
-          </ul>
+          <FinePrintExpander
+            items={deal.finePrint}
+            dealId={deal.dealId}
+            analytics={analytics}
+          />
         </div>
       )}
 

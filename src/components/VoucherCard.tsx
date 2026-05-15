@@ -59,6 +59,29 @@ export function VoucherCard({ order, voucherCode, analytics, onActionSelected }:
         )}
       </div>
 
+      {/* Add to calendar */}
+      <div style={{ marginBottom: 12 }}>
+        <button
+          data-testid="add-to-calendar-button"
+          onClick={() => analytics.track({ event: "add_to_calendar_tapped", orderId: order.orderId })}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+            background: "transparent",
+            color: "#2563eb",
+            border: "1px solid #2563eb",
+            borderRadius: 8,
+            padding: "8px 14px",
+            fontSize: 13,
+            fontWeight: 600,
+            cursor: "pointer",
+          }}
+        >
+          📅 Add to calendar
+        </button>
+      </div>
+
       {/* Voucher code */}
       <div
         data-testid="voucher-code-section"
