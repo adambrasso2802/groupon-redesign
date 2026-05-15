@@ -206,3 +206,32 @@ describe("MyGrouponsScreen — callbacks", () => {
     expect(() => fireEvent.click(screen.getByTestId("action-report-problem"))).not.toThrow();
   });
 });
+
+// ---------------------------------------------------------------------------
+// Settings — notification preferences link
+// ---------------------------------------------------------------------------
+
+describe("MyGrouponsScreen — settings link", () => {
+  it("does not render the settings section when onOpenNotificationPreferences is omitted", () => {
+    renderScreen();
+    expect(screen.queryByTestId("my-groupons-settings")).toBeNull();
+  });
+
+  it("renders the settings section when onOpenNotificationPreferences is provided", () => {
+    renderScreen({ onOpenNotificationPreferences: vi.fn() });
+    expect(screen.getByTestId("my-groupons-settings")).toBeInTheDocument();
+    expect(screen.getByTestId("open-notification-preferences")).toBeInTheDocument();
+  });
+
+  it("calls onOpenNotificationPreferences when the link is tapped", () => {
+    const onOpenNotificationPreferences = vi.fn();
+    renderScreen({ onOpenNotificationPreferences });
+    fireEvent.click(screen.getByTestId("open-notification-preferences"));
+    expect(onOpenNotificationPreferences).toHaveBeenCalledTimes(1);
+  });
+
+  it("renders the settings link even when the orders list is empty", () => {
+    renderScreen({ orders: [], onOpenNotificationPreferences: vi.fn() });
+    expect(screen.getByTestId("open-notification-preferences")).toBeInTheDocument();
+  });
+});

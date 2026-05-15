@@ -36,3 +36,9 @@ export { VoucherCard } from "./VoucherCard";
 export type { VoucherCardProps } from "./VoucherCard";
 export { MyGrouponsScreen } from "./MyGrouponsScreen";
 export type { MyGrouponsScreenProps } from "./MyGrouponsScreen";
+export {
+  NotificationPreferenceCenter,
+  NOTIFICATION_PREFS_STORAGE_KEY,
+  DEFAULT_NOTIFICATION_PREFERENCES,
+} from "./NotificationPreferenceCenter";
+export type { NotificationPreferenceCenterProps } from "./NotificationPreferenceCenter";

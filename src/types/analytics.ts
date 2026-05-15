@@ -1,4 +1,5 @@
 import type { DealCategory, PaymentMethod, SupportIssueCategory } from "./deal";
+import type { NotificationCategory } from "./preferences";
 
 export type LifestylePreference =
   | "foodie"
@@ -321,6 +322,25 @@ export interface SupportActionSelectedEvent {
 }
 
 // ---------------------------------------------------------------------------
+// Tier 9 — Notification Preferences
+// ---------------------------------------------------------------------------
+
+export interface NotificationPreferencesViewedEvent {
+  event: "notification_preferences_viewed";
+}
+
+export interface NotificationPreferenceChangedEvent {
+  event: "notification_preference_changed";
+  category: NotificationCategory;
+  enabled: boolean;
+}
+
+export interface AllNotificationsPausedEvent {
+  event: "all_notifications_paused";
+  paused: boolean;
+}
+
+// ---------------------------------------------------------------------------
 // Union — every trackable event across all six phases
 // ---------------------------------------------------------------------------
 
@@ -378,7 +398,11 @@ export type AnalyticsEvent =
   | SupportEscalatedToHumanEvent
   | SelfServeRefundStartedEvent
   | SelfServeRefundCompletedEvent
-  | SupportActionSelectedEvent;
+  | SupportActionSelectedEvent
+  // Tier 9
+  | NotificationPreferencesViewedEvent
+  | NotificationPreferenceChangedEvent
+  | AllNotificationsPausedEvent;
 
 /** Narrow the union to the event payload type for a given event name */
 export type EventByName<T extends AnalyticsEvent["event"]> = Extract<

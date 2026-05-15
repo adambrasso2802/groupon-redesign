@@ -14,7 +14,11 @@ export type {
   SupportIssueCategory,
 } from "./deal";
 
-export type { GrouponPreferences } from "./preferences";
+export type {
+  GrouponPreferences,
+  NotificationCategory,
+  NotificationPreferences,
+} from "./preferences";
 
 export type {
   AnalyticsEvent,
@@ -74,4 +78,8 @@ export type {
   SelfServeRefundCompletedEvent,
   SupportAction,
   SupportActionSelectedEvent,
+  // Tier 9
+  NotificationPreferencesViewedEvent,
+  NotificationPreferenceChangedEvent,
+  AllNotificationsPausedEvent,
 } from "./analytics";

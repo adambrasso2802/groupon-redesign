@@ -44,9 +44,9 @@ function saveRecentSearch(query: string): void {
 export interface UnifiedSearchBarProps {
   analytics: AnalyticsClient;
   /** Called when a keyword search is submitted. */
-  onSearch?: (query: string) => void;
+  onSearch?: ((query: string) => void) | undefined;
   /** Called when an NL/assistant query is submitted. */
-  onAssistantQuery?: (query: string) => void;
+  onAssistantQuery?: ((query: string) => void) | undefined;
 }
 
 export function UnifiedSearchBar({

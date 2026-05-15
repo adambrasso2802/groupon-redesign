@@ -243,7 +243,7 @@ describe("DealDetailScreen — analytics", () => {
   it("fires deal_detail_viewed exactly once on mount", () => {
     render(<DealDetailScreen deal={makeDeal()} analytics={analytics} />);
     const calls = (analytics.track as ReturnType<typeof vi.fn>).mock.calls.filter(
-      ([e]: [{ event: string }]) => e.event === "deal_detail_viewed",
+      (args: unknown[]) => (args[0] as { event: string }).event === "deal_detail_viewed",
     );
     expect(calls).toHaveLength(1);
   });

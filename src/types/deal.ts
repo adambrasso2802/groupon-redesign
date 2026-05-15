@@ -21,7 +21,7 @@ export interface RefundPolicy {
   /** Plain-English summary rendered on badge and checkout, e.g. "Free cancellation up to 24h before your appointment" */
   plainTextSummary: string;
   /** Unix timestamp (ms) of the deadline, set post-purchase */
-  deadlineMs?: number;
+  deadlineMs?: number | undefined;
 }
 
 export type BNPLProvider = "klarna" | "afterpay" | "affirm";
@@ -100,7 +100,7 @@ export interface CheckoutSummary {
   orderId?: string; // set after purchase
   deal: Pick<Deal, "title" | "merchant" | "heroImages" | "category">;
   pricing: PriceBreakdown;
-  selectedSlotIso?: string; // set when deal.isBookable
+  selectedSlotIso?: string | undefined; // set when deal.isBookable
   refundPolicy: RefundPolicy;
   hasRecurringCharge: boolean;
   recurringChargeAcknowledged: boolean;
