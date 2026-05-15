@@ -51,7 +51,7 @@ describe("createAnalyticsClient", () => {
     const events: AnalyticsEvent[] = [
       { event: "quiz_started" },
       { event: "lifestyle_preference_selected", preference: "fitness" },
-      { event: "quiz_completed", selectedPreferences: ["fitness", "parent"] },
+      { event: "quiz_completed", selectedPreferences: ["fitness", "parent"], budgetRange: "25_to_50", locationRadiusMiles: 10 },
       { event: "quiz_skipped" },
     ];
 
