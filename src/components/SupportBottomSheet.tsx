@@ -10,6 +10,8 @@ export interface SupportBottomSheetProps {
   refundPolicy: RefundPolicy;
   analytics: AnalyticsClient;
   onActionSelected?: (action: SupportAction) => void;
+  /** When provided, renders a menu entry to open the notification preference center. */
+  onOpenNotificationPreferences?: () => void;
 }
 
 type SheetView = "menu" | "refund" | "chat" | "report";
@@ -37,14 +39,15 @@ export function SupportBottomSheet({
   refundPolicy,
   analytics,
   onActionSelected,
+  onOpenNotificationPreferences,
 }: SupportBottomSheetProps) {
   const [view, setView] = useState<SheetView>("menu");
   const [issueCategory, setIssueCategory] = useState<SupportIssueCategory>("other");
   const [reportDescription, setReportDescription] = useState("");
   const [reportSubmitted, setReportSubmitted] = useState(false);
   const [chatInput, setChatInput] = useState("");
-  const [chatMessages, setChatMessages] = useState([
-    { from: "support" as const, text: "Hi! A support agent will be with you shortly. What do you need help with?" },
+  const [chatMessages, setChatMessages] = useState<{ from: "support" | "user"; text: string }[]>([
+    { from: "support", text: "Hi! A support agent will be with you shortly. What do you need help with?" },
   ]);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
@@ -77,7 +80,7 @@ export function SupportBottomSheet({
   function handleSendChat() {
     const text = chatInput.trim();
     if (!text) return;
-    setChatMessages((prev) => [...prev, { from: "user" as const, text }]);
+    setChatMessages((prev) => [...prev, { from: "user", text }]);
     setChatInput("");
   }
 
@@ -170,6 +173,18 @@ export function SupportBottomSheet({
               description="Tell us what went wrong with your order"
               onClick={() => handleAction("report_a_problem")}
             />
+            {onOpenNotificationPreferences && (
+              <MenuOption
+                testId="action-notification-preferences"
+                icon="🔔"
+                title="Notification preferences"
+                description="Manage deal alerts, reminders, and emails"
+                onClick={() => {
+                  onClose();
+                  onOpenNotificationPreferences();
+                }}
+              />
+            )}
           </div>
         )}
 

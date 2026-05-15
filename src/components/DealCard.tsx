@@ -8,7 +8,7 @@ export interface DealCardProps {
   analytics: AnalyticsClient;
   /** Zero-based position in the containing list — included in analytics payload. */
   position: number;
-  onTap?: (deal: Deal) => void;
+  onTap?: ((deal: Deal) => void) | undefined;
 }
 
 function formatDollars(cents: number): string {

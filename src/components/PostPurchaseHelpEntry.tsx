@@ -10,7 +10,7 @@ export interface PostPurchaseHelpEntryProps {
   refundPolicy: RefundPolicy;
   surface: HelpSurface;
   analytics: AnalyticsClient;
-  onActionSelected?: (action: SupportAction) => void;
+  onActionSelected?: ((action: SupportAction) => void) | undefined;
 }
 
 const SURFACE_STYLES: Record<HelpSurface, React.CSSProperties> = {

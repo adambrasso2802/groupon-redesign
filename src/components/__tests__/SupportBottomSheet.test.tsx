@@ -345,3 +345,29 @@ describe("SupportBottomSheet — close", () => {
     expect(screen.getByTestId("sheet-menu")).toBeInTheDocument();
   });
 });
+
+// ---------------------------------------------------------------------------
+// Notification preferences entry
+// ---------------------------------------------------------------------------
+
+describe("SupportBottomSheet — notification preferences entry", () => {
+  it("does not render the entry when onOpenNotificationPreferences is omitted", () => {
+    renderSheet();
+    expect(screen.queryByTestId("action-notification-preferences")).toBeNull();
+  });
+
+  it("renders the entry when onOpenNotificationPreferences is provided", () => {
+    renderSheet({ onOpenNotificationPreferences: vi.fn() });
+    expect(screen.getByTestId("action-notification-preferences")).toBeInTheDocument();
+  });
+
+  it("calls onOpenNotificationPreferences and onClose when the entry is tapped", () => {
+    const onOpenNotificationPreferences = vi.fn();
+    const onClose = vi.fn();
+    renderSheet({ onOpenNotificationPreferences, onClose });
+    fireEvent.click(screen.getByTestId("action-notification-preferences"));
+    expect(onOpenNotificationPreferences).toHaveBeenCalledTimes(1);
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+});
+

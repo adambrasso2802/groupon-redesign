@@ -6,7 +6,7 @@ import { DealCard } from "./DealCard";
 export interface PersonalizedFeedListProps {
   deals: Deal[];
   analytics: AnalyticsClient;
-  onDealTap?: (deal: Deal) => void;
+  onDealTap?: ((deal: Deal) => void) | undefined;
 }
 
 export function PersonalizedFeedList({ deals, analytics, onDealTap }: PersonalizedFeedListProps) {
