@@ -8,6 +8,10 @@ export type LifestylePreference =
   | "wellness_spa"
   | "nightlife_daytrip";
 
+export type BudgetRange = "under_25" | "25_to_50" | "50_to_100" | "over_100";
+
+export type LocationRadiusMiles = 5 | 10 | 25 | 50;
+
 export type SearchMode = "keyword" | "assistant";
 
 export type AssistantResultAction = "book" | "save" | "share";
@@ -33,6 +37,8 @@ export interface LifestylePreferenceSelectedEvent {
 export interface QuizCompletedEvent {
   event: "quiz_completed";
   selectedPreferences: LifestylePreference[];
+  budgetRange: BudgetRange;
+  locationRadiusMiles: LocationRadiusMiles;
 }
 
 export interface QuizSkippedEvent {

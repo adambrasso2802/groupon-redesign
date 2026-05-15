@@ -14,10 +14,14 @@ export type {
   SupportIssueCategory,
 } from "./deal";
 
+export type { GrouponPreferences } from "./preferences";
+
 export type {
   AnalyticsEvent,
   EventByName,
   LifestylePreference,
+  BudgetRange,
+  LocationRadiusMiles,
   SearchMode,
   AssistantResultAction,
   HelpSurface,

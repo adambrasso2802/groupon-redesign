@@ -25,13 +25,17 @@ describe("AnalyticsEvent union — Phase 0 (Onboarding)", () => {
     }
   });
 
-  it("accepts quiz_completed with selectedPreferences", () => {
+  it("accepts quiz_completed with all required fields", () => {
     const e = asEvent({
       event: "quiz_completed",
       selectedPreferences: ["foodie", "fitness"],
+      budgetRange: "25_to_50",
+      locationRadiusMiles: 10,
     });
     if (e.event === "quiz_completed") {
       expect(e.selectedPreferences).toContain("foodie");
+      expect(e.budgetRange).toBe("25_to_50");
+      expect(e.locationRadiusMiles).toBe(10);
     }
   });
 
