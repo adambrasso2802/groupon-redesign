@@ -10,3 +10,7 @@ export { PersonalizedFeedList } from "./PersonalizedFeedList";
 export type { PersonalizedFeedListProps } from "./PersonalizedFeedList";
 export { HomeScreen } from "./HomeScreen";
 export type { HomeScreenProps } from "./HomeScreen";
+export { UnifiedSearchBar, RECENT_SEARCHES_KEY } from "./UnifiedSearchBar";
+export type { UnifiedSearchBarProps } from "./UnifiedSearchBar";
+export { AssistantChatPanel } from "./AssistantChatPanel";
+export type { AssistantChatPanelProps } from "./AssistantChatPanel";
