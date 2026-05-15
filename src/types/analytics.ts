@@ -179,6 +179,25 @@ export interface BuyTappedEvent {
   totalCents: number;
 }
 
+export interface DealDetailViewedEvent {
+  event: "deal_detail_viewed";
+  dealId: string;
+  category: DealCategory;
+}
+
+export interface DateSelectedEvent {
+  event: "date_selected";
+  dealId: string;
+  dateIso: string;
+}
+
+export interface BuyNowTappedEvent {
+  event: "buy_now_tapped";
+  dealId: string;
+  totalCents: number;
+  selectedDateIso?: string;
+}
+
 export interface BnplHintTappedEvent {
   event: "bnpl_hint_tapped";
   dealId: string;
@@ -328,6 +347,9 @@ export type AnalyticsEvent =
   | DealSavedEvent
   | BuyTappedEvent
   | BnplHintTappedEvent
+  | DealDetailViewedEvent
+  | DateSelectedEvent
+  | BuyNowTappedEvent
   // Phase 4
   | CheckoutOpenedEvent
   | SlotSelectedEvent
