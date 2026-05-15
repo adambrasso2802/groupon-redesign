@@ -24,12 +24,12 @@ export { DealDetailScreen } from "./DealDetailScreen";
 export type { DealDetailScreenProps } from "./DealDetailScreen";
 export { InAppThreeDChallenge } from "./InAppThreeDChallenge";
 export type { InAppThreeDChallengeProps } from "./InAppThreeDChallenge";
-export { OrderConfirmationScreen } from "./OrderConfirmationScreen";
-export type { OrderConfirmationScreenProps } from "./OrderConfirmationScreen";
+export { BookingConfirmationScreen } from "./OrderConfirmationScreen";
+export type { BookingConfirmationScreenProps } from "./OrderConfirmationScreen";
 export { CheckoutScreen } from "./CheckoutScreen";
 export type { CheckoutScreenProps } from "./CheckoutScreen";
-export { SupportBottomSheet, formatRefundDeadline } from "./SupportBottomSheet";
-export type { SupportBottomSheetProps } from "./SupportBottomSheet";
+export { SupportChatPanel, formatRefundDeadline } from "./SupportBottomSheet";
+export type { SupportChatPanelProps } from "./SupportBottomSheet";
 export { PostPurchaseHelpEntry } from "./PostPurchaseHelpEntry";
 export type { PostPurchaseHelpEntryProps } from "./PostPurchaseHelpEntry";
 export { VoucherCard } from "./VoucherCard";
@@ -42,3 +42,11 @@ export {
   DEFAULT_NOTIFICATION_PREFERENCES,
 } from "./NotificationPreferenceCenter";
 export type { NotificationPreferenceCenterProps } from "./NotificationPreferenceCenter";
+export { InstantConfirmationBadge } from "./InstantConfirmationBadge";
+export type { InstantConfirmationBadgeProps } from "./InstantConfirmationBadge";
+export { BNPLPricingHint } from "./BNPLPricingHint";
+export type { BNPLPricingHintProps } from "./BNPLPricingHint";
+export { SearchFilterPanel } from "./SearchFilterPanel";
+export type { SearchFilterPanelProps } from "./SearchFilterPanel";
+export { FinePrintExpander } from "./FinePrintExpander";
+export type { FinePrintExpanderProps } from "./FinePrintExpander";

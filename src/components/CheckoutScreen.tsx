@@ -4,7 +4,8 @@ import type { AnalyticsClient } from "../analytics/client";
 import { PricingBreakdownPanel } from "./PricingBreakdownPanel";
 import { RefundPolicyBadge } from "./RefundPolicyBadge";
 import { InAppThreeDChallenge } from "./InAppThreeDChallenge";
-import { OrderConfirmationScreen } from "./OrderConfirmationScreen";
+import { BookingConfirmationScreen } from "./OrderConfirmationScreen";
+import { BNPLPricingHint } from "./BNPLPricingHint";
 
 export interface CheckoutScreenProps {
   deal: Deal;
@@ -77,7 +78,7 @@ export function CheckoutScreen({
 
   if (completedOrderId !== null) {
     return (
-      <OrderConfirmationScreen
+      <BookingConfirmationScreen
         orderId={completedOrderId}
         dealId={deal.dealId}
         deal={deal}
@@ -86,6 +87,8 @@ export function CheckoutScreen({
       />
     );
   }
+
+  const primaryBnpl = deal.bnplOptions.length > 0 ? deal.bnplOptions[0] : null;
 
   return (
     <div data-testid="checkout-screen">
@@ -255,6 +258,15 @@ export function CheckoutScreen({
           >
             Total: {fmt(deal.pricing.totalCents)}
           </p>
+          {primaryBnpl && (
+            <div style={{ marginTop: 4 }}>
+              <BNPLPricingHint
+                bnplOption={primaryBnpl}
+                dealId={deal.dealId}
+                analytics={analytics}
+              />
+            </div>
+          )}
         </div>
       </div>
 

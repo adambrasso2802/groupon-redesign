@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import type { RefundPolicy } from "../types/deal";
 import type { HelpSurface, SupportAction } from "../types/analytics";
 import type { AnalyticsClient } from "../analytics/client";
-import { SupportBottomSheet } from "./SupportBottomSheet";
+import { SupportChatPanel } from "./SupportBottomSheet";
 
 export interface PostPurchaseHelpEntryProps {
   orderId: string;
@@ -76,7 +76,7 @@ export function PostPurchaseHelpEntry({
         <span aria-hidden="true">🙋</span> Need help?
       </button>
 
-      <SupportBottomSheet
+      <SupportChatPanel
         isOpen={sheetOpen}
         onClose={() => setSheetOpen(false)}
         orderId={orderId}

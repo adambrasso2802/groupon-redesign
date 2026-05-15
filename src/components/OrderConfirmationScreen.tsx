@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import type { Deal } from "../types/deal";
 import type { AnalyticsClient } from "../analytics/client";
 
-export interface OrderConfirmationScreenProps {
+export interface BookingConfirmationScreenProps {
   orderId: string;
   dealId: string;
   deal: Pick<Deal, "title" | "merchant">;
@@ -12,14 +12,14 @@ export interface OrderConfirmationScreenProps {
   onNeedHelp?: () => void;
 }
 
-export function OrderConfirmationScreen({
+export function BookingConfirmationScreen({
   orderId,
   dealId,
   deal,
   selectedDate,
   analytics,
   onNeedHelp,
-}: OrderConfirmationScreenProps) {
+}: BookingConfirmationScreenProps) {
   useEffect(() => {
     analytics.track({ event: "booking_confirmation_viewed", dealId, orderId });
     // eslint-disable-next-line react-hooks/exhaustive-deps

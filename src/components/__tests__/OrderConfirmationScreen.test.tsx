@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
-import { OrderConfirmationScreen } from "../OrderConfirmationScreen";
+import { BookingConfirmationScreen } from "../OrderConfirmationScreen";
 import type { AnalyticsClient } from "../../analytics/client";
 
 function makeAnalytics(): AnalyticsClient {
@@ -19,7 +19,7 @@ const baseDeal = {
   },
 };
 
-function renderScreen(overrides: Partial<React.ComponentProps<typeof OrderConfirmationScreen>> = {}) {
+function renderScreen(overrides: Partial<React.ComponentProps<typeof BookingConfirmationScreen>> = {}) {
   const props = {
     orderId: "ORDER-1234567890-00001",
     dealId: "deal-001",
@@ -29,7 +29,7 @@ function renderScreen(overrides: Partial<React.ComponentProps<typeof OrderConfir
     onNeedHelp: vi.fn(),
     ...overrides,
   };
-  render(<OrderConfirmationScreen {...props} />);
+  render(<BookingConfirmationScreen {...props} />);
   return props;
 }
 
@@ -125,7 +125,7 @@ describe("OrderConfirmationScreen — callbacks", () => {
 
   it("does not throw when onNeedHelp is not provided", () => {
     render(
-      <OrderConfirmationScreen
+      <BookingConfirmationScreen
         orderId="ORDER-123"
         dealId="deal-001"
         deal={baseDeal}

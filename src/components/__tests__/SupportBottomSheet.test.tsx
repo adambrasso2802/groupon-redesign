@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
-import { SupportBottomSheet, formatRefundDeadline } from "../SupportBottomSheet";
+import { SupportChatPanel, formatRefundDeadline } from "../SupportBottomSheet";
 import type { AnalyticsClient } from "../../analytics/client";
 import type { RefundPolicy } from "../../types/deal";
 
@@ -24,7 +24,7 @@ const nonRefundablePolicy: RefundPolicy = {
   plainTextSummary: "Non-refundable",
 };
 
-function renderSheet(overrides: Partial<React.ComponentProps<typeof SupportBottomSheet>> = {}) {
+function renderSheet(overrides: Partial<React.ComponentProps<typeof SupportChatPanel>> = {}) {
   const props = {
     isOpen: true,
     onClose: vi.fn(),
@@ -34,7 +34,7 @@ function renderSheet(overrides: Partial<React.ComponentProps<typeof SupportBotto
     onActionSelected: vi.fn(),
     ...overrides,
   };
-  render(<SupportBottomSheet {...props} />);
+  render(<SupportChatPanel {...props} />);
   return props;
 }
 
@@ -313,7 +313,7 @@ describe("SupportBottomSheet — close", () => {
 
   it("resets to menu view when reopened", () => {
     const { rerender } = render(
-      <SupportBottomSheet
+      <SupportChatPanel
         isOpen={true}
         onClose={vi.fn()}
         orderId="ORDER-001"
@@ -325,7 +325,7 @@ describe("SupportBottomSheet — close", () => {
     expect(screen.getByTestId("sheet-refund-view")).toBeInTheDocument();
 
     rerender(
-      <SupportBottomSheet
+      <SupportChatPanel
         isOpen={false}
         onClose={vi.fn()}
         orderId="ORDER-001"
@@ -334,7 +334,7 @@ describe("SupportBottomSheet — close", () => {
       />,
     );
     rerender(
-      <SupportBottomSheet
+      <SupportChatPanel
         isOpen={true}
         onClose={vi.fn()}
         orderId="ORDER-001"
