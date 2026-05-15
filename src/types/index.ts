@@ -72,4 +72,6 @@ export type {
   SupportEscalatedToHumanEvent,
   SelfServeRefundStartedEvent,
   SelfServeRefundCompletedEvent,
+  SupportAction,
+  SupportActionSelectedEvent,
 } from "./analytics";
