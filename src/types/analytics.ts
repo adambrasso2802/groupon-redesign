@@ -312,6 +312,14 @@ export interface SelfServeRefundCompletedEvent {
   refundAmountCents: number;
 }
 
+export type SupportAction = "get_a_refund" | "contact_support" | "report_a_problem";
+
+export interface SupportActionSelectedEvent {
+  event: "support_action_selected";
+  orderId: string;
+  action: SupportAction;
+}
+
 // ---------------------------------------------------------------------------
 // Union — every trackable event across all six phases
 // ---------------------------------------------------------------------------
@@ -369,7 +377,8 @@ export type AnalyticsEvent =
   | SupportChatOpenedEvent
   | SupportEscalatedToHumanEvent
   | SelfServeRefundStartedEvent
-  | SelfServeRefundCompletedEvent;
+  | SelfServeRefundCompletedEvent
+  | SupportActionSelectedEvent;
 
 /** Narrow the union to the event payload type for a given event name */
 export type EventByName<T extends AnalyticsEvent["event"]> = Extract<
