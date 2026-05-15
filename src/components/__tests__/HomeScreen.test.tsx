@@ -88,9 +88,9 @@ describe("HomeScreen — structure with preferences", () => {
     expect(screen.getByTestId("groupon-logo")).toHaveTextContent("Groupon");
   });
 
-  it("renders the search icon button placeholder", () => {
+  it("renders the unified search bar", () => {
     render(<HomeScreen analytics={makeAnalytics()} />);
-    expect(screen.getByTestId("search-icon-button")).toBeInTheDocument();
+    expect(screen.getByTestId("unified-search-bar")).toBeInTheDocument();
   });
 
   it("renders the bottom tab bar", () => {
@@ -105,29 +105,38 @@ describe("HomeScreen — structure with preferences", () => {
 });
 
 // ---------------------------------------------------------------------------
-// Search icon — Tier 5 placeholder
+// Search — UnifiedSearchBar (Tier 5)
 // ---------------------------------------------------------------------------
 
-describe("HomeScreen — search icon placeholder", () => {
+describe("HomeScreen — UnifiedSearchBar", () => {
   beforeEach(() => {
     setPreferences(allPreferences());
   });
 
-  it("has aria-label 'Open search' on the search icon button", () => {
+  it("renders the search input", () => {
     render(<HomeScreen analytics={makeAnalytics()} />);
-    expect(screen.getByTestId("search-icon-button")).toHaveAttribute("aria-label", "Open search");
+    expect(screen.getByTestId("search-input")).toBeInTheDocument();
   });
 
-  it("calls onSearchTap when search icon is tapped", () => {
-    const onSearchTap = vi.fn();
-    render(<HomeScreen analytics={makeAnalytics()} onSearchTap={onSearchTap} />);
-    fireEvent.click(screen.getByTestId("search-icon-button"));
-    expect(onSearchTap).toHaveBeenCalledOnce();
+  it("renders the mic button placeholder", () => {
+    render(<HomeScreen analytics={makeAnalytics()} />);
+    expect(screen.getByTestId("mic-button")).toBeInTheDocument();
   });
 
-  it("does not throw when onSearchTap is not provided", () => {
-    render(<HomeScreen analytics={makeAnalytics()} />);
-    expect(() => fireEvent.click(screen.getByTestId("search-icon-button"))).not.toThrow();
+  it("calls onSearch when a keyword query is submitted", () => {
+    const onSearch = vi.fn();
+    render(<HomeScreen analytics={makeAnalytics()} onSearch={onSearch} />);
+    fireEvent.change(screen.getByTestId("search-input"), { target: { value: "spa day" } });
+    fireEvent.submit(screen.getByTestId("search-form"));
+    expect(onSearch).toHaveBeenCalledWith("spa day");
+  });
+
+  it("calls onAssistantQuery when an NL query is submitted", () => {
+    const onAssistantQuery = vi.fn();
+    render(<HomeScreen analytics={makeAnalytics()} onAssistantQuery={onAssistantQuery} />);
+    fireEvent.change(screen.getByTestId("search-input"), { target: { value: "find me a spa" } });
+    fireEvent.submit(screen.getByTestId("search-form"));
+    expect(onAssistantQuery).toHaveBeenCalledWith("find me a spa");
   });
 });
 

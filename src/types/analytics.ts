@@ -92,10 +92,23 @@ export interface SearchBarOpenedEvent {
   event: "search_bar_opened";
 }
 
+export interface SearchInitiatedEvent {
+  event: "search_initiated";
+}
+
 export interface SearchSubmittedEvent {
   event: "search_submitted";
   query: string;
   mode: SearchMode;
+}
+
+export interface AssistantOpenedEvent {
+  event: "assistant_opened";
+}
+
+export interface AssistantMessageSentEvent {
+  event: "assistant_message_sent";
+  query: string;
 }
 
 export interface SearchFilterChangedEvent {
@@ -298,11 +311,14 @@ export type AnalyticsEvent =
   | FeedScrolledEvent
   // Phase 2
   | SearchBarOpenedEvent
+  | SearchInitiatedEvent
   | SearchSubmittedEvent
   | SearchFilterChangedEvent
   | SearchResultTappedEvent
   | AssistantQuerySubmittedEvent
   | AssistantResultActionTakenEvent
+  | AssistantOpenedEvent
+  | AssistantMessageSentEvent
   // Phase 3
   | DealViewedEvent
   | HeroImageSwipedEvent

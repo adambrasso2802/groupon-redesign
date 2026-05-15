@@ -7,12 +7,13 @@ import { MOCK_RECOMMENDATION_DEALS } from "../fixtures/recommendations";
 import { STORAGE_KEY, LifestyleQuizScreen } from "./LifestyleQuizScreen";
 import { PersonalizedFeedList } from "./PersonalizedFeedList";
 import { BottomTabBar, type BottomTab } from "./BottomTabBar";
+import { UnifiedSearchBar } from "./UnifiedSearchBar";
 
 export interface HomeScreenProps {
   analytics: AnalyticsClient;
   onDealTap?: (deal: Deal) => void;
-  /** Placeholder tap target — wired to UnifiedSearchBar in Tier 5. */
-  onSearchTap?: () => void;
+  onSearch?: (query: string) => void;
+  onAssistantQuery?: (query: string) => void;
 }
 
 const PREFERENCE_CATEGORIES: Record<LifestylePreference, DealCategory[]> = {
@@ -51,7 +52,7 @@ function filterAndSort(deals: Deal[], prefs: GrouponPreferences | null): Deal[] 
   return filtered.length > 0 ? filtered : sorted;
 }
 
-export function HomeScreen({ analytics, onDealTap, onSearchTap }: HomeScreenProps) {
+export function HomeScreen({ analytics, onDealTap, onSearch, onAssistantQuery }: HomeScreenProps) {
   const [hasPreferences, setHasPreferences] = useState<boolean>(() => loadPreferences() !== null);
   const [activeTab, setActiveTab] = useState<BottomTab>("home");
   const hasTrackedView = useRef(false);
@@ -91,33 +92,22 @@ export function HomeScreen({ analytics, onDealTap, onSearchTap }: HomeScreenProp
           zIndex: 100,
           background: "#fff",
           borderBottom: "1px solid #e5e7eb",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
           padding: "12px 16px",
         }}
       >
-        <div data-testid="groupon-logo" aria-label="Groupon" style={{ fontWeight: 800, fontSize: 22, color: "#16a34a", letterSpacing: -0.5 }}>
+        <div
+          data-testid="groupon-logo"
+          aria-label="Groupon"
+          style={{ fontWeight: 800, fontSize: 22, color: "#16a34a", letterSpacing: -0.5, marginBottom: 10 }}
+        >
           Groupon
         </div>
 
-        <button
-          data-testid="search-icon-button"
-          aria-label="Open search"
-          onClick={onSearchTap}
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            padding: 4,
-            color: "#111827",
-          }}
-        >
-          <svg width={24} height={24} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth={2} />
-            <path d="M16.5 16.5L21 21" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
-          </svg>
-        </button>
+        <UnifiedSearchBar
+          analytics={analytics}
+          onSearch={onSearch}
+          onAssistantQuery={onAssistantQuery}
+        />
       </header>
 
       <main>
