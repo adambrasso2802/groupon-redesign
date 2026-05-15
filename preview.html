@@ -1,564 +1,1154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Groupon HomeScreen — Preview</title>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Groupon Redesign — User Journey Preview</title>
+<style>
+/* ── RESET ───────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+button { font-family: inherit; cursor: pointer; }
+dl, dt, dd, ul, ol, li { margin: 0; padding: 0; list-style: none; }
+input { font-family: inherit; }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #dbeafe 0%, #d1fae5 100%);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 32px 16px 48px;
-      gap: 20px;
-    }
+/* ── DESIGN TOKENS ───────────────────────────────────────── */
+:root {
+  --green:        #16a34a;
+  --green-lt:     #22c55e;
+  --green-bg:     #f0fdf4;
+  --green-bd:     #bbf7d0;
+  --amber:        #f59e0b;
+  --amber-bg:     #fffbeb;
+  --amber-bd:     #fde68a;
+  --red:          #ef4444;
+  --blue:         #2563eb;
+  --g50:  #f9fafb;
+  --g100: #f3f4f6;
+  --g200: #e5e7eb;
+  --g300: #d1d5db;
+  --g400: #9ca3af;
+  --g500: #6b7280;
+  --g600: #4b5563;
+  --g700: #374151;
+  --g800: #1f2937;
+  --g900: #111827;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
 
-    .page-label {
-      font-size: 13px;
-      font-weight: 600;
-      color: #6b7280;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
+/* ── PAGE ────────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  background: radial-gradient(ellipse 130% 70% at 50% -5%, #1e1b4b 0%, #0f172a 58%);
+  min-height: 100vh;
+  padding: 52px 0 88px;
+  color: #fff;
+}
 
-    /* ─── Phone frame ─── */
-    .phone-frame {
-      width: 390px;
-      max-width: 100%;
-      height: 844px;
-      display: flex;
-      flex-direction: column;
-      background: #f9fafb;
-      border-radius: 52px;
-      overflow: hidden;
-      box-shadow:
-        0 0 0 2px #4b5563,
-        0 0 0 10px #1a1a1a,
-        0 32px 80px rgba(0,0,0,0.45);
-    }
+/* ── PAGE HEADER ─────────────────────────────────────────── */
+.page-header { text-align: center; padding: 0 32px 52px; }
+.page-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(22,163,74,.18); border: 1px solid rgba(22,163,74,.4);
+  border-radius: 20px; padding: 5px 14px;
+  font-size: 12px; font-weight: 600; color: #4ade80;
+  letter-spacing: .06em; text-transform: uppercase; margin-bottom: 18px;
+}
+.page-header h1 {
+  font-size: 40px; font-weight: 800; letter-spacing: -1.2px;
+  background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 10px;
+}
+.page-header p { font-size: 15px; color: #94a3b8; }
 
-    /* ─── Status bar ─── */
-    .status-bar {
-      background: #fff;
-      padding: 14px 24px 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13px;
-      font-weight: 700;
-      flex-shrink: 0;
-      color: #111827;
-    }
+/* ── PHONES ROW ──────────────────────────────────────────── */
+.phones-row {
+  display: flex; gap: 44px; padding: 0 48px 40px;
+  overflow-x: auto; align-items: flex-start;
+  scrollbar-width: thin; scrollbar-color: #334155 transparent;
+}
+.phones-row::-webkit-scrollbar { height: 6px; }
+.phones-row::-webkit-scrollbar-track { background: transparent; }
+.phones-row::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
 
-    .status-icons { display: flex; align-items: center; gap: 6px; }
+/* ── PHONE WRAPPER ───────────────────────────────────────── */
+.phone-wrapper { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.phone-step { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.step-num {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: rgba(22,163,74,.22); border: 1.5px solid rgba(22,163,74,.55);
+  color: #4ade80; font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.step-name { font-size: 13px; font-weight: 700; color: #e2e8f0; }
+.step-desc { font-size: 11px; color: #64748b; text-align: center; max-width: 190px; }
 
-    /* ─── Header ─── */
-    .home-header {
-      background: #fff;
-      border-bottom: 1px solid #e5e7eb;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 16px;
-      flex-shrink: 0;
-    }
+/* ── PHONE FRAME ─────────────────────────────────────────── */
+.phone-frame {
+  width: 393px; background: #0d0d0d; border-radius: 54px; padding: 14px;
+  box-shadow:
+    0 0 0 1px #292929, 0 0 0 2.5px #161616, 0 0 0 4px #222,
+    0 36px 110px rgba(0,0,0,.75),
+    inset 0 0 0 1px rgba(255,255,255,.04);
+  position: relative;
+}
+/* volume buttons */
+.phone-frame::before {
+  content: ''; position: absolute; left: -3.5px; top: 108px;
+  width: 3.5px; height: 32px;
+  background: linear-gradient(to right, #1a1a1a, #2e2e2e);
+  border-radius: 2px 0 0 2px;
+  box-shadow: 0 48px 0 #2e2e2e, 0 84px 0 #2e2e2e;
+}
+/* power button */
+.phone-frame::after {
+  content: ''; position: absolute; right: -3.5px; top: 140px;
+  width: 3.5px; height: 72px;
+  background: linear-gradient(to left, #1a1a1a, #2e2e2e);
+  border-radius: 0 2px 2px 0;
+}
 
-    .groupon-logo {
-      font-weight: 800;
-      font-size: 22px;
-      color: #16a34a;
-      letter-spacing: -0.5px;
-    }
+/* ── PHONE INNER ─────────────────────────────────────────── */
+.phone-inner {
+  width: 100%; height: 824px; background: #fff; border-radius: 44px;
+  overflow: hidden; display: flex; flex-direction: column; position: relative;
+}
 
-    .search-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px;
-      color: #111827;
-      line-height: 0;
-    }
+/* ── STATUS BAR ──────────────────────────────────────────── */
+.status-bar {
+  height: 54px; flex-shrink: 0;
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 0 28px 10px; position: relative; z-index: 50;
+  background: var(--sb-bg, #fff);
+}
+.sb-time { font-size: 15.5px; font-weight: 700; letter-spacing: -.3px; color: var(--sb-c, #111); }
+.sb-icons { display: flex; align-items: center; gap: 6px; }
+.dynamic-island {
+  position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+  width: 118px; height: 34px; background: #0d0d0d; border-radius: 20px; z-index: 60;
+}
 
-    /* ─── Scrollable feed ─── */
-    .feed {
-      flex: 1;
-      overflow-y: auto;
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-    .feed::-webkit-scrollbar { display: none; }
+/* ── SCREEN SCROLL ───────────────────────────────────────── */
+.screen-scroll {
+  flex: 1; overflow-y: auto; overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+.screen-scroll::-webkit-scrollbar { width: 3px; }
+.screen-scroll::-webkit-scrollbar-track { background: transparent; }
+.screen-scroll::-webkit-scrollbar-thumb { background: var(--g200); border-radius: 2px; }
 
-    /* ─── Deal card ─── */
-    .deal-card {
-      background: #fff;
-      margin-bottom: 8px;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .deal-card:last-child { margin-bottom: 0; }
-    .deal-card:active { opacity: 0.95; }
+/* ── HOME INDICATOR ──────────────────────────────────────── */
+.home-indicator {
+  height: 26px; background: var(--hi, #fff);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.home-bar { width: 134px; height: 5px; background: rgba(0,0,0,.2); border-radius: 3px; }
 
-    .deal-hero {
-      width: 100%;
-      height: 195px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      color: rgba(255,255,255,0.95);
-      user-select: none;
-    }
+/* ═══════════════════════════════════════════════════════════
+   SCREEN 1 — QUIZ
+═══════════════════════════════════════════════════════════ */
+.quiz-wrap { background: #fff; padding: 28px 20px 24px; }
+.quiz-progress-row { font-size: 13px; color: var(--g500); margin-bottom: 6px; }
+.quiz-prog-bar { height: 4px; background: var(--g200); border-radius: 2px; margin-bottom: 22px; overflow: hidden; }
+.quiz-prog-fill { height: 100%; background: var(--green); border-radius: 2px; }
+.quiz-q { font-size: 21px; font-weight: 700; color: var(--g900); margin-bottom: 8px; }
+.quiz-sub { font-size: 14px; color: var(--g500); margin-bottom: 22px; line-height: 1.45; }
+.quiz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 22px; }
+.quiz-opt {
+  padding: 14px 10px; border-radius: 10px; border: 2px solid var(--g200);
+  background: #fff; font-size: 14px; font-weight: 500; color: var(--g800);
+  text-align: center; transition: all .14s; line-height: 1.35;
+}
+.quiz-opt.sel { border-color: var(--green); background: var(--green-bg); color: var(--green); font-weight: 600; }
+.btn-primary {
+  width: 100%; padding: 14px; background: var(--green); color: #fff;
+  border: none; border-radius: 10px; font-size: 15px; font-weight: 700; margin-bottom: 10px;
+}
+.btn-skip-lnk {
+  width: 100%; padding: 12px; background: transparent; border: none;
+  color: var(--g500); font-size: 14px; text-decoration: underline;
+}
 
-    .hero-emoji { font-size: 52px; line-height: 1; }
+/* ═══════════════════════════════════════════════════════════
+   SCREEN 2 — HOME
+═══════════════════════════════════════════════════════════ */
+.app-header {
+  position: sticky; top: 0; z-index: 100;
+  background: #fff; border-bottom: 1px solid var(--g200);
+  padding: 12px 16px 10px;
+}
+.logo { font-size: 22px; font-weight: 800; color: var(--green); letter-spacing: -.5px; margin-bottom: 10px; }
+.search-bar {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--g100); border: 1.5px solid var(--g200);
+  border-radius: 10px; padding: 9px 12px;
+}
+.search-bar input {
+  flex: 1; border: none; background: transparent;
+  font-size: 14px; color: var(--g700); outline: none;
+}
+.search-bar input::placeholder { color: var(--g400); }
 
-    .hero-label {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-    }
+.filter-panel { background: #fff; border-bottom: 1px solid var(--g200); padding: 8px 16px 10px; }
+.filter-row { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.filter-row::-webkit-scrollbar { display: none; }
+.filter-row + .filter-row { margin-top: 6px; }
+.chip {
+  flex-shrink: 0; background: var(--g100); color: var(--g700);
+  border: 1px solid var(--g200); border-radius: 20px; padding: 6px 12px;
+  font-size: 13px; white-space: nowrap; transition: all .13s;
+}
+.chip.active { background: var(--green); color: #fff; border-color: var(--green); font-weight: 600; }
 
-    .deal-body { padding: 12px 14px 14px; }
+.deal-card { background: #fff; border-bottom: 1px solid var(--g200); }
+.deal-card:last-child { border-bottom: none; }
+.deal-img {
+  width: 100%; height: 155px; overflow: hidden; position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+.deal-img-inner {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px; background: rgba(0,0,0,.1);
+}
+.di-emoji { font-size: 36px; line-height: 1; filter: drop-shadow(0 2px 4px rgba(0,0,0,.25)); }
+.di-label { font-size: 12px; color: rgba(255,255,255,.92); font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,.4); }
+.deal-body { padding: 11px 14px 13px; }
+.deal-cat { font-size: 10.5px; text-transform: uppercase; color: var(--g400); letter-spacing: .07em; margin-bottom: 3px; }
+.deal-title { font-size: 15px; font-weight: 600; color: var(--g900); line-height: 1.3; margin-bottom: 2px; }
+.deal-merch { font-size: 13px; color: var(--g500); margin-bottom: 7px; }
+.deal-price-row { display: flex; align-items: baseline; gap: 7px; margin-bottom: 3px; }
+.dp-now { font-size: 18px; font-weight: 700; color: var(--g900); }
+.dp-was { font-size: 13px; color: var(--g400); text-decoration: line-through; }
+.dp-pct { font-size: 13px; font-weight: 600; color: var(--green-lt); }
+.bnpl-hint { font-size: 12px; color: var(--g500); margin-bottom: 4px; }
+.bnpl-hint u { text-decoration-style: dotted; cursor: pointer; }
+.deal-reason { font-size: 12px; color: var(--g400); margin: 5px 0 7px; line-height: 1.35; }
+.rb { display: inline-block; border-radius: 4px; padding: 2px 8px; font-size: 12px; font-weight: 600; color: #fff; }
+.rb-g { background: var(--green-lt); }
+.rb-a { background: var(--amber); }
+.rb-r { background: var(--red); }
 
-    .deal-category {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      color: #9ca3af;
-      margin-bottom: 4px;
-    }
+.bottom-tabs {
+  display: flex; flex-shrink: 0; background: #fff; border-top: 1px solid var(--g200);
+}
+.tab-btn {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 10px 4px 8px; border: none; background: none;
+  font-size: 11px; color: var(--g500); font-weight: 400; transition: color .12s;
+}
+.tab-btn.active { color: var(--green); font-weight: 700; }
 
-    .deal-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: #111827;
-      line-height: 1.3;
-      margin-bottom: 3px;
-    }
+/* ═══════════════════════════════════════════════════════════
+   SCREEN 3 — DEAL DETAIL
+═══════════════════════════════════════════════════════════ */
+.hero {
+  position: relative; height: 244px; overflow: hidden; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.hero-inner {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+}
+.hero-emoji { font-size: 52px; filter: drop-shadow(0 4px 8px rgba(0,0,0,.3)); }
+.hero-lbl { font-size: 14px; color: rgba(255,255,255,.92); font-weight: 700; text-shadow: 0 2px 6px rgba(0,0,0,.45); letter-spacing: .03em; }
+.hero-counter {
+  position: absolute; top: 12px; right: 12px;
+  background: rgba(0,0,0,.45); color: #fff; border-radius: 12px;
+  padding: 3px 9px; font-size: 12px; font-weight: 600;
+}
+.hero-back {
+  position: absolute; top: 12px; left: 12px;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(0,0,0,.38); border: none; color: #fff;
+  font-size: 19px; line-height: 1; display: flex; align-items: center; justify-content: center;
+}
+.hero-dots { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; }
+.hd { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.45); }
+.hd.on { background: #fff; width: 16px; border-radius: 3px; }
 
-    .deal-merchant {
-      font-size: 13px;
-      color: #6b7280;
-      margin-bottom: 6px;
-    }
+.section { padding: 16px 16px 0; }
+.dd-title { font-size: 19px; font-weight: 700; color: var(--g900); margin-bottom: 7px; line-height: 1.28; }
+.merch-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 10px; }
+.merch-name { font-weight: 600; font-size: 15px; color: var(--g900); }
+.merch-rating { color: var(--amber); font-weight: 600; }
+.merch-reviews { color: var(--g500); font-size: 13px; }
 
-    .deal-rating {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      margin-bottom: 8px;
-    }
+.ic-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  border-radius: 6px; padding: 4px 10px; font-size: 13px; font-weight: 600;
+}
+.ic-confirmed { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-bd); }
+.ic-pending   { background: var(--amber-bg); color: #b45309;       border: 1px solid var(--amber-bd); }
 
-    .stars { color: #f59e0b; font-size: 12px; letter-spacing: 1px; }
+.pricing-panel { background: var(--g50); border-radius: 8px; padding: 12px 16px; }
+.pricing-panel-hd { font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--g600); margin-bottom: 11px; }
+.pr { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
+.pr.tot { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--g200); margin-bottom: 0; }
+.pl { font-size: 13px; color: var(--g500); }
+.pv { font-size: 13px; color: var(--g700); }
+.pl.t { font-weight: 700; color: var(--g900); font-size: 14px; }
+.pv.t { font-weight: 700; color: var(--g900); font-size: 14px; }
 
-    .rating-text { font-size: 12px; color: #6b7280; }
+.cal-section h2 { font-size: 15px; font-weight: 600; color: var(--g900); margin-bottom: 10px; }
+.cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.cal-nav-btn { background: none; border: none; font-size: 22px; color: var(--g600); padding: 4px 8px; line-height: 1; }
+.cal-month-lbl { font-weight: 600; font-size: 14px; color: var(--g900); }
+.cal-hdr { display: grid; grid-template-columns: repeat(7,1fr); text-align: center; margin-bottom: 3px; }
+.cal-dn { font-size: 10.5px; color: var(--g400); font-weight: 600; padding: 2px 0; }
+.cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; text-align: center; }
+.cal-day { padding: 7px 2px; border: none; border-radius: 5px; font-size: 13.5px; background: transparent; }
+.cal-day.avail { color: var(--g900); }
+.cal-day.avail:hover { background: var(--green-bg); }
+.cal-day.unavail { color: var(--g300); }
+.cal-day.sel { background: var(--green-lt) !important; color: #fff; font-weight: 700; }
+.cal-sel-text { margin-top: 8px; font-size: 13px; color: var(--green-lt); font-weight: 600; }
 
-    .deal-pricing {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      margin-bottom: 6px;
-      flex-wrap: wrap;
-    }
+.fp-section { border-top: 1px solid var(--g200); padding-top: 16px; }
+.fp-toggle { display: flex; align-items: center; gap: 6px; background: none; border: none; font-size: 15px; font-weight: 600; color: var(--g700); padding: 0; }
+.fp-chev { font-size: 12px; transition: transform .15s; display: inline-block; line-height: 1; }
+.fp-chev.open { transform: rotate(180deg); }
+.fp-list { padding-left: 18px; margin-top: 10px; }
+.fp-list li { font-size: 13px; color: var(--g500); margin-bottom: 5px; list-style: disc; }
 
-    .price-deal {
-      font-size: 19px;
-      font-weight: 800;
-      color: #111827;
-    }
+.sticky-buy {
+  background: #fff; border-top: 1px solid var(--g200);
+  padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+}
+.sticky-price { font-size: 18px; font-weight: 700; color: var(--g900); }
+.sticky-price small { font-size: 12px; font-weight: 400; color: var(--g500); margin-left: 3px; }
+.btn-buy {
+  background: var(--green-lt); color: #fff; border: none; border-radius: 9px;
+  padding: 12px 30px; font-size: 16px; font-weight: 700;
+}
 
-    .price-original {
-      font-size: 14px;
-      text-decoration: line-through;
-      color: #9ca3af;
-    }
+/* ═══════════════════════════════════════════════════════════
+   SCREEN 4 — CHECKOUT
+═══════════════════════════════════════════════════════════ */
+.pay-opt {
+  display: flex; align-items: center; gap: 11px;
+  border: 2px solid var(--g200); border-radius: 9px; padding: 12px 14px; margin-bottom: 8px;
+}
+.pay-opt.sel { border-color: var(--green-lt); }
+.pay-opt input[type="radio"] { accent-color: var(--green-lt); width: 16px; height: 16px; flex-shrink: 0; }
+.pay-title { font-size: 14px; font-weight: 600; color: var(--g900); }
+.pay-sub { font-size: 12px; color: var(--g500); margin-top: 1px; }
+.bnpl-box { background: var(--green-bg); border: 1px solid #86efac; border-radius: 8px; padding: 12px 14px; margin-bottom: 12px; }
+.bnpl-box p { font-size: 13px; line-height: 1.4; }
+.bnpl-box .bb-h { font-weight: 600; color: #166534; margin-bottom: 3px; }
+.bnpl-box .bb-b { color: #15803d; }
+.order-card { background: var(--g50); border-radius: 9px; padding: 12px 14px; }
+.oc-title { font-size: 14px; font-weight: 600; color: var(--g900); margin-bottom: 2px; }
+.oc-merch { font-size: 13px; color: var(--g500); margin-bottom: 2px; }
+.oc-date  { font-size: 13px; color: var(--g700); }
+.oc-total { font-size: 15px; font-weight: 700; color: var(--g900); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--g200); }
+.btn-confirm { width: 100%; background: var(--green-lt); color: #fff; border: none; border-radius: 10px; padding: 15px; font-size: 16px; font-weight: 700; }
+.section-h { font-size: 15px; font-weight: 600; color: var(--g900); margin-bottom: 11px; }
 
-    .price-discount {
-      font-size: 13px;
-      font-weight: 700;
-      color: #16a34a;
-      background: #dcfce7;
-      padding: 1px 6px;
-      border-radius: 4px;
-    }
+/* ═══════════════════════════════════════════════════════════
+   SCREEN 5 — CONFIRMATION
+═══════════════════════════════════════════════════════════ */
+.confirm-hero { text-align: center; padding: 32px 16px 20px; }
+.confirm-check { font-size: 52px; line-height: 1; margin-bottom: 10px; }
+.confirm-title { font-size: 22px; font-weight: 700; color: var(--g900); margin-bottom: 5px; }
+.confirm-sub { font-size: 14px; color: var(--g500); }
+.order-det-card {
+  margin: 0 16px; background: var(--g50); border-radius: 12px;
+  padding: 16px; display: flex; flex-direction: column; gap: 13px;
+}
+.od-lbl { font-size: 10.5px; color: var(--g400); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 3px; }
+.od-val { font-size: 14px; font-weight: 600; color: var(--g900); }
+.od-val.mono { font-family: monospace; font-weight: 700; letter-spacing: .02em; }
+.od-sub { font-size: 13px; color: var(--g500); margin-top: 1px; }
+.help-entry { border-top: 1px solid var(--g200); padding-top: 18px; margin-top: 18px; }
+.btn-help {
+  width: 100%; background: transparent; color: var(--blue); border: 2px solid var(--blue);
+  border-radius: 9px; padding: 14px 20px; font-size: 15px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  transition: background .13s, color .13s;
+}
+.btn-help:hover { background: var(--blue); color: #fff; }
 
-    .deal-reason {
-      font-size: 12px;
-      color: #6b7280;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: flex-start;
-      gap: 4px;
-      line-height: 1.4;
-    }
-
-    /* ─── Refund badge ─── */
-    .refund-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      border-radius: 4px;
-      padding: 3px 8px;
-      font-size: 11px;
-      font-weight: 700;
-      color: #fff;
-      line-height: 1.3;
-    }
-
-    .refund-badge.green  { background: #22c55e; }
-    .refund-badge.amber  { background: #f59e0b; }
-    .refund-badge.red    { background: #ef4444; }
-
-    /* ─── Bottom tab bar ─── */
-    .bottom-tab-bar {
-      flex-shrink: 0;
-      background: #fff;
-      border-top: 1px solid #e5e7eb;
-      display: flex;
-    }
-
-    .tab-btn {
-      flex: 1;
-      padding: 10px 4px 12px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      font-size: 10px;
-      font-weight: 400;
-      font-family: inherit;
-      color: #6b7280;
-      line-height: 1;
-    }
-
-    .tab-btn.active {
-      color: #16a34a;
-      font-weight: 700;
-    }
-
-    /* ─── Badge legend (outside phone) ─── */
-    .badge-legend {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      color: #374151;
-      font-weight: 500;
-    }
-
-    .legend-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-  </style>
+/* ═══════════════════════════════════════════════════════════
+   SCREEN 6 — VOUCHER
+═══════════════════════════════════════════════════════════ */
+.voucher-page { background: var(--g50); min-height: 100%; padding: 16px; }
+.voucher-card { background: #fff; border: 1px solid var(--g200); border-radius: 14px; padding: 20px; }
+.vc-deal  { font-size: 16px; font-weight: 700; color: var(--g900); margin-bottom: 3px; }
+.vc-merch { font-size: 14px; color: var(--g500); margin-bottom: 2px; }
+.vc-date  { font-size: 13px; color: var(--g700); margin-bottom: 6px; margin-top: 5px; }
+.btn-cal {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: transparent; color: var(--blue); border: 1px solid var(--blue);
+  border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: 600; margin-bottom: 14px;
+}
+.voucher-code-box { background: var(--g50); border: 1.5px dashed var(--g300); border-radius: 9px; padding: 14px 16px; }
+.vcode-lbl { font-size: 10.5px; color: var(--g400); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 5px; }
+.vcode-val { font-size: 22px; font-weight: 700; font-family: monospace; letter-spacing: .18em; color: var(--g900); }
+.voucher-help { border-top: 1px solid var(--g200); padding-top: 14px; margin-top: 16px; }
+</style>
 </head>
 <body>
 
-  <p class="page-label">Groupon HomeScreen · Mobile Preview · 390 × 844</p>
+<!-- SVG sprite ─────────────────────────────────────────── -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <symbol id="i-signal" viewBox="0 0 17 12">
+    <rect x="0"    y="7"   width="3" height="5"   rx=".6"/>
+    <rect x="4.5"  y="4.5" width="3" height="7.5" rx=".6"/>
+    <rect x="9"    y="2"   width="3" height="10"  rx=".6"/>
+    <rect x="13.5" y="0"   width="3" height="12"  rx=".6" opacity=".28"/>
+  </symbol>
+  <symbol id="i-wifi" viewBox="0 0 16 12">
+    <circle cx="8" cy="11" r="1.1" fill="currentColor"/>
+    <path d="M5.2 7.6a4 4 0 0 1 5.6 0"    stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+    <path d="M2.5 5a7.5 7.5 0 0 1 11 0"   stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+    <path d="M0 2.3A11 11 0 0 1 16 2.3"   stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none" opacity=".3"/>
+  </symbol>
+  <symbol id="i-battery" viewBox="0 0 25 13">
+    <rect x=".6" y=".6" width="21" height="11.8" rx="3.4" stroke="currentColor" stroke-opacity=".35" fill="none"/>
+    <rect x="2"  y="2"  width="16" height="9"    rx="2"   fill="currentColor"/>
+    <path d="M22.5 4.5v4a2 2 0 0 0 0-4z" fill="currentColor" opacity=".4"/>
+  </symbol>
+  <symbol id="i-home" viewBox="0 0 24 24" fill="none">
+    <path d="M3 12L12 3l9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M5 10v11h14V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M9 21V13h6v8"   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none">
+    <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+    <path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-ticket" viewBox="0 0 24 24" fill="none">
+    <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
+    <path d="M3 9h18"  stroke="currentColor" stroke-width="2"/>
+    <path d="M9 13h6"  stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-support" viewBox="0 0 24 24" fill="none">
+    <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+    <path d="M12 8v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="12" cy="16" r="1" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-search-sm" viewBox="0 0 20 20" fill="none">
+    <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M14 14l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-mic" viewBox="0 0 20 20" fill="none">
+    <rect x="7" y="2" width="6" height="10" rx="3" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M4 10a6 6 0 0 0 12 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    <line x1="10" y1="16" x2="10" y2="19" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+  </symbol>
+</svg>
 
+<!-- PAGE HEADER ─────────────────────────────────────────── -->
+<header class="page-header">
+  <div class="page-badge">✦ Design Preview</div>
+  <h1>Groupon Redesign</h1>
+  <p>Complete user journey &nbsp;·&nbsp; 6 screens &nbsp;·&nbsp; Scroll horizontally to explore →</p>
+</header>
+
+<div class="phones-row">
+
+<!-- ═══════════════════════════════════════════════════════
+     SCREEN 1 · LifestyleQuizScreen
+═══════════════════════════════════════════════════════ -->
+<div class="phone-wrapper">
+  <div class="phone-step">
+    <div class="step-num">1</div>
+    <div class="step-name">LifestyleQuizScreen</div>
+    <div class="step-desc">First launch · step 1 of 3</div>
+  </div>
   <div class="phone-frame">
-
-    <!-- Status bar -->
-    <div class="status-bar">
-      <span>12:41</span>
-      <div class="status-icons">
-        <!-- Signal bars -->
-        <svg width="17" height="12" viewBox="0 0 17 12" fill="#111827" aria-hidden="true">
-          <rect x="0"  y="7" width="3" height="5" rx="0.5"/>
-          <rect x="4.5" y="5" width="3" height="7" rx="0.5"/>
-          <rect x="9"  y="2.5" width="3" height="9.5" rx="0.5"/>
-          <rect x="13.5" y="0" width="3" height="12" rx="0.5"/>
-        </svg>
-        <!-- WiFi -->
-        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="#111827" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
-          <path d="M8 9.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" fill="#111827" stroke="none"/>
-          <path d="M5 7.5 C6 6.2 7 5.5 8 5.5 C9 5.5 10 6.2 11 7.5"/>
-          <path d="M2.5 5C4.2 3 6 2 8 2s3.8 1 5.5 3"/>
-        </svg>
-        <!-- Battery -->
-        <svg width="24" height="12" viewBox="0 0 24 12" fill="none" aria-hidden="true">
-          <rect x="0.75" y="0.75" width="19.5" height="10.5" rx="2.5" stroke="#111827" stroke-width="1.5"/>
-          <path d="M21 4v4a2 2 0 0 1 0-4z" fill="#111827"/>
-          <rect x="2.5" y="2.5" width="15" height="7" rx="1.5" fill="#111827"/>
-        </svg>
+    <div class="phone-inner">
+      <div class="status-bar">
+        <span class="sb-time">9:41</span>
+        <div class="dynamic-island"></div>
+        <div class="sb-icons">
+          <svg width="17" height="12" fill="#111"><use href="#i-signal"/></svg>
+          <svg width="16" height="12" color="#111"><use href="#i-wifi"/></svg>
+          <svg width="25" height="13" color="#111"><use href="#i-battery"/></svg>
+        </div>
       </div>
-    </div>
-
-    <!-- App header -->
-    <header class="home-header">
-      <div class="groupon-logo" aria-label="Groupon">Groupon</div>
-      <button class="search-btn" aria-label="Open search">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
-          <path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </button>
-    </header>
-
-    <!-- Deal feed — rendered by JS -->
-    <main class="feed" id="feed" aria-label="Personalized deals"></main>
-
-    <!-- Bottom tab bar -->
-    <nav class="bottom-tab-bar" aria-label="Main navigation">
-      <button class="tab-btn active" aria-label="Home" aria-current="page">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M3 12L12 3l9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M9 21V12h6v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M5 10v11h14V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span>Home</span>
-      </button>
-      <button class="tab-btn" aria-label="Search">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
-          <path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        <span>Search</span>
-      </button>
-      <button class="tab-btn" aria-label="My Groupons">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
-          <path d="M3 9h18" stroke="currentColor" stroke-width="2"/>
-          <path d="M9 13h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        <span>My Groupons</span>
-      </button>
-      <button class="tab-btn" aria-label="Support">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
-          <path d="M12 8v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="12" cy="16" r="1" fill="currentColor"/>
-        </svg>
-        <span>Support</span>
-      </button>
-    </nav>
-
-  </div><!-- /.phone-frame -->
-
-  <!-- Badge state legend -->
-  <div class="badge-legend" aria-label="Refund badge legend">
-    <div class="legend-item">
-      <div class="legend-dot" style="background:#22c55e;"></div>
-      <span><strong>Green</strong> — refundable ≥ 24 h window</span>
-    </div>
-    <div class="legend-item">
-      <div class="legend-dot" style="background:#f59e0b;"></div>
-      <span><strong>Amber</strong> — refundable &lt; 24 h window</span>
-    </div>
-    <div class="legend-item">
-      <div class="legend-dot" style="background:#ef4444;"></div>
-      <span><strong>Red</strong> — no refund</span>
+      <div class="screen-scroll" style="background:#fff">
+        <div class="quiz-wrap">
+          <div class="quiz-progress-row" aria-label="Step 1 of 3">1 of 3</div>
+          <div class="quiz-prog-bar"><div class="quiz-prog-fill" style="width:33%"></div></div>
+          <h2 class="quiz-q">What are you into?</h2>
+          <p class="quiz-sub">Select everything that fits — we'll personalize your deals.</p>
+          <div class="quiz-grid">
+            <button class="quiz-opt sel" onclick="this.classList.toggle('sel')">🍕 Foodie</button>
+            <button class="quiz-opt"     onclick="this.classList.toggle('sel')">💪 Fitness</button>
+            <button class="quiz-opt"     onclick="this.classList.toggle('sel')">👨‍👩‍👦 Parent</button>
+            <button class="quiz-opt"     onclick="this.classList.toggle('sel')">🐾 Pet Owner</button>
+            <button class="quiz-opt sel" onclick="this.classList.toggle('sel')">🧖 Wellness &amp; Spa</button>
+            <button class="quiz-opt"     onclick="this.classList.toggle('sel')">🌃 Nightlife &amp; Trips</button>
+          </div>
+          <button class="btn-primary">Continue</button>
+          <button class="btn-skip-lnk">Skip for now</button>
+        </div>
+      </div>
+      <div class="home-indicator"><div class="home-bar"></div></div>
     </div>
   </div>
+</div>
 
-  <script>
-    // ─── Fixture data (from src/fixtures/recommendations.ts) ───
-    // Cards 4 & 5 have adjusted refundPolicy to demonstrate amber and red badge states.
-    const DEALS = [
-      {
-        dealId: "mock-001",
-        title: "90-Minute Deep Tissue Massage",
-        merchant: { name: "Serenity Day Spa", rating: 4.8, reviewCount: 412 },
-        category: "spa_wellness",
-        hero: { gradient: "linear-gradient(135deg,#f9c8df,#c0508a)", emoji: "🧖", label: "Spa & Wellness" },
-        pricing: { dealPriceCents: 4999, originalPriceCents: 12000 },
-        refundPolicy: {
-          isRefundable: true, windowAmount: 24, windowUnit: "hours",
-          plainTextSummary: "Free cancellation up to 24h before appt",
-        },
-        recommendation: { reason: "Because you booked spa days before" },
-      },
-      {
-        dealId: "mock-002",
-        title: "3-Course Dinner for Two",
-        merchant: { name: "The Oak Room", rating: 4.6, reviewCount: 289 },
-        category: "food_drink",
-        hero: { gradient: "linear-gradient(135deg,#ffd4a3,#d06820)", emoji: "🍽️", label: "Food & Drink" },
-        pricing: { dealPriceCents: 4499, originalPriceCents: 9000 },
-        refundPolicy: {
-          isRefundable: true, windowAmount: 48, windowUnit: "hours",
-          plainTextSummary: "Free cancellation up to 48h before reservation",
-        },
-        recommendation: { reason: "Top-rated date night near you" },
-      },
-      {
-        dealId: "mock-003",
-        title: "1-Month Unlimited Gym Access",
-        merchant: { name: "IronHouse Gym", rating: 4.5, reviewCount: 631 },
-        category: "fitness",
-        hero: { gradient: "linear-gradient(135deg,#93c5fd,#1d4ed8)", emoji: "💪", label: "Fitness" },
-        pricing: { dealPriceCents: 2999, originalPriceCents: 7900 },
-        refundPolicy: {
-          isRefundable: true, windowAmount: 7, windowUnit: "days",
-          plainTextSummary: "Free cancellation within 7 days of purchase",
-        },
-        recommendation: { reason: "Popular with fitness fans in your area" },
-      },
-      {
-        // amber badge — refundable but < 24 h window (adjusted for demo)
-        dealId: "mock-004",
-        title: "Kids' Indoor Adventure Park — Family Pass",
-        merchant: { name: "Bounce Zone", rating: 4.7, reviewCount: 198 },
-        category: "family_kids",
-        hero: { gradient: "linear-gradient(135deg,#c084fc,#7e22ce)", emoji: "🎪", label: "Family & Kids" },
-        pricing: { dealPriceCents: 3499, originalPriceCents: 7000 },
-        refundPolicy: {
-          isRefundable: true, windowAmount: 4, windowUnit: "hours",
-          plainTextSummary: "Cancellation up to 4h before your visit",
-        },
-        recommendation: { reason: "Trending with families nearby" },
-      },
-      {
-        // red badge — not refundable (adjusted for demo)
-        dealId: "mock-005",
-        title: "Full Dog Grooming Session",
-        merchant: { name: "Pampered Paws Salon", rating: 4.9, reviewCount: 87 },
-        category: "pets",
-        hero: { gradient: "linear-gradient(135deg,#6ee7b7,#059669)", emoji: "🐾", label: "Pets" },
-        pricing: { dealPriceCents: 2499, originalPriceCents: 5500 },
-        refundPolicy: {
-          isRefundable: false, windowAmount: 0, windowUnit: "hours",
-          plainTextSummary: "No refunds or cancellations",
-        },
-        recommendation: { reason: "Highest-rated pet groomer in your city" },
-      },
-      {
-        dealId: "mock-006",
-        title: "Sunset Kayak Tour for Two",
-        merchant: { name: "Blue Horizon Adventures", rating: 4.8, reviewCount: 143 },
-        category: "activities",
-        hero: { gradient: "linear-gradient(135deg,#7dd3fc,#0369a1)", emoji: "🚣", label: "Activities" },
-        pricing: { dealPriceCents: 7999, originalPriceCents: 16000 },
-        refundPolicy: {
-          isRefundable: true, windowAmount: 48, windowUnit: "hours",
-          plainTextSummary: "Free cancellation up to 48h before tour",
-        },
-        recommendation: { reason: "Adventure awaits — a weekend favourite near you" },
-      },
-    ];
+<!-- ═══════════════════════════════════════════════════════
+     SCREEN 2 · HomeScreen
+═══════════════════════════════════════════════════════ -->
+<div class="phone-wrapper">
+  <div class="phone-step">
+    <div class="step-num">2</div>
+    <div class="step-name">HomeScreen</div>
+    <div class="step-desc">6 AI recommendations + SearchFilterPanel</div>
+  </div>
+  <div class="phone-frame">
+    <div class="phone-inner">
+      <div class="status-bar">
+        <span class="sb-time">9:41</span>
+        <div class="dynamic-island"></div>
+        <div class="sb-icons">
+          <svg width="17" height="12" fill="#111"><use href="#i-signal"/></svg>
+          <svg width="16" height="12" color="#111"><use href="#i-wifi"/></svg>
+          <svg width="25" height="13" color="#111"><use href="#i-battery"/></svg>
+        </div>
+      </div>
+      <div class="screen-scroll" style="background:var(--g50)">
+        <!-- sticky header -->
+        <div class="app-header">
+          <div class="logo">Groupon</div>
+          <div class="search-bar">
+            <svg width="18" height="18" color="var(--g400)"><use href="#i-search-sm"/></svg>
+            <input type="text" placeholder="Search deals near you…" readonly>
+            <button style="background:none;border:none;display:flex;align-items:center;color:var(--g400)">
+              <svg width="18" height="18" color="currentColor"><use href="#i-mic"/></svg>
+            </button>
+          </div>
+        </div>
+        <!-- SearchFilterPanel -->
+        <div class="filter-panel">
+          <div class="filter-row">
+            <button class="chip" onclick="this.classList.toggle('active')">Food &amp; Drink</button>
+            <button class="chip" onclick="this.classList.toggle('active')">Fitness</button>
+            <button class="chip active" onclick="this.classList.toggle('active')">Spa</button>
+            <button class="chip" onclick="this.classList.toggle('active')">Activities</button>
+            <button class="chip" onclick="this.classList.toggle('active')">Travel</button>
+            <button class="chip" onclick="this.classList.toggle('active')">Beauty</button>
+            <button class="chip" onclick="this.classList.toggle('active')">Shopping</button>
+          </div>
+          <div class="filter-row">
+            <button class="chip" onclick="this.classList.toggle('active')">Under $25</button>
+            <button class="chip" onclick="this.classList.toggle('active')">$25–$50</button>
+            <button class="chip active" onclick="this.classList.toggle('active')">$50–$100</button>
+            <button class="chip" onclick="this.classList.toggle('active')">$100+</button>
+            <button class="chip" onclick="this.classList.toggle('active')">5 mi</button>
+            <button class="chip active" onclick="this.classList.toggle('active')">25 mi</button>
+            <button class="chip" onclick="this.classList.toggle('active')">4★+</button>
+          </div>
+        </div>
+        <!-- deal feed -->
+        <div style="background:#fff;margin-top:8px">
 
-    // ─── Logic (mirrors src/components/RefundPolicyBadge.tsx) ───
-    function getRefundBadgeColor(rp) {
-      if (!rp.isRefundable) return "red";
-      const hours = rp.windowUnit === "hours" ? rp.windowAmount : rp.windowAmount * 24;
-      if (hours >= 24) return "green";
-      if (hours > 0)   return "amber";
-      return "red";
-    }
-
-    function formatDollars(cents) {
-      return "$" + (cents / 100).toFixed(2);
-    }
-
-    function renderStars(rating) {
-      const full = Math.floor(rating);
-      return "★".repeat(full) + (rating - full >= 0.5 ? "½" : "");
-    }
-
-    function esc(s) {
-      return String(s)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;");
-    }
-
-    // ─── Render (mirrors DealCard.tsx) ───
-    function renderCard(deal, position) {
-      const discountPct = Math.round(
-        ((deal.pricing.originalPriceCents - deal.pricing.dealPriceCents) /
-          deal.pricing.originalPriceCents) * 100
-      );
-      const badgeColor = getRefundBadgeColor(deal.refundPolicy);
-      const catLabel   = deal.category.replace(/_/g, " ");
-
-      const badgeIcon = badgeColor === "green" ? "✓" : badgeColor === "amber" ? "⚠" : "✕";
-
-      return `
-        <div
-          class="deal-card"
-          role="button"
-          tabindex="0"
-          aria-label="${esc(deal.title)}"
-          data-testid="deal-card"
-          data-position="${position}"
-        >
-          <div
-            class="deal-hero"
-            style="background:${deal.hero.gradient};"
-            aria-hidden="true"
-          >
-            <span class="hero-emoji" role="img" aria-hidden="true">${deal.hero.emoji}</span>
-            <span class="hero-label">${esc(deal.hero.label)}</span>
+          <!-- card 1 · spa (main deal) -->
+          <div class="deal-card">
+            <div class="deal-img" style="background:linear-gradient(135deg,#f5d0fe,#c084fc 45%,#e879f9)">
+              <div class="deal-img-inner"><div class="di-emoji">💆</div><div class="di-label">Serenity Wellness Spa</div></div>
+            </div>
+            <div class="deal-body">
+              <div class="deal-cat">Spa &amp; Wellness</div>
+              <div class="deal-title">60-min Deep Tissue Massage + Aromatherapy Facial</div>
+              <div class="deal-merch">Serenity Wellness Spa · Chicago, IL · 4.8 ★ (2,341)</div>
+              <div class="deal-price-row">
+                <span class="dp-now">$89.00</span>
+                <span class="dp-was">$180.00</span>
+                <span class="dp-pct">51% off</span>
+              </div>
+              <div class="bnpl-hint">or <u>4 payments of $22.48</u> with Klarna</div>
+              <div class="deal-reason">✨ Based on your Wellness &amp; Spa interest</div>
+              <span class="rb rb-g">Free cancellation 24 h before</span>
+            </div>
           </div>
 
-          <div class="deal-body">
-            <div class="deal-category" data-testid="deal-card-category">${esc(catLabel)}</div>
-            <div class="deal-title"   data-testid="deal-card-title">${esc(deal.title)}</div>
-            <div class="deal-merchant" data-testid="deal-card-merchant">${esc(deal.merchant.name)}</div>
-
-            <div class="deal-rating">
-              <span class="stars" aria-hidden="true">${renderStars(deal.merchant.rating)}</span>
-              <span class="rating-text">${deal.merchant.rating} (${deal.merchant.reviewCount.toLocaleString()})</span>
+          <!-- card 2 · sushi -->
+          <div class="deal-card">
+            <div class="deal-img" style="background:linear-gradient(135deg,#fef3c7,#fbbf24 45%,#f97316)">
+              <div class="deal-img-inner"><div class="di-emoji">🍣</div><div class="di-label">Sakura Bistro</div></div>
             </div>
-
-            <div class="deal-pricing">
-              <span class="price-deal"     data-testid="deal-card-price">${esc(formatDollars(deal.pricing.dealPriceCents))}</span>
-              <span class="price-original" data-testid="deal-card-original-price">${esc(formatDollars(deal.pricing.originalPriceCents))}</span>
-              ${discountPct > 0
-                ? `<span class="price-discount" data-testid="deal-card-discount">${discountPct}% off</span>`
-                : ""}
+            <div class="deal-body">
+              <div class="deal-cat">Food &amp; Drink</div>
+              <div class="deal-title">Sushi Feast for 2 + Sake Pairing</div>
+              <div class="deal-merch">Sakura Bistro · River North · 4.6 ★ (892)</div>
+              <div class="deal-price-row">
+                <span class="dp-now">$45.00</span>
+                <span class="dp-was">$90.00</span>
+                <span class="dp-pct">50% off</span>
+              </div>
+              <div class="bnpl-hint">or <u>4 payments of $11.25</u> with Klarna</div>
+              <div class="deal-reason">⭐ Top-rated restaurant near you</div>
+              <span class="rb rb-a">Cancellation up to 2 h before</span>
             </div>
-
-            ${deal.recommendation
-              ? `<div class="deal-reason" data-testid="deal-card-reason">
-                   <span aria-hidden="true">✨</span>
-                   <span>${esc(deal.recommendation.reason)}</span>
-                 </div>`
-              : ""}
-
-            <span
-              class="refund-badge ${badgeColor}"
-              data-testid="refund-policy-badge"
-              data-color="${badgeColor}"
-            >${badgeIcon} ${esc(deal.refundPolicy.plainTextSummary)}</span>
           </div>
-        </div>`;
-    }
 
-    // ─── Mount ───
-    const feed = document.getElementById("feed");
-    feed.innerHTML = DEALS.map((d, i) => renderCard(d, i)).join("");
+          <!-- card 3 · escape room -->
+          <div class="deal-card">
+            <div class="deal-img" style="background:linear-gradient(135deg,#dbeafe,#60a5fa 40%,#7c3aed)">
+              <div class="deal-img-inner"><div class="di-emoji">🔐</div><div class="di-label">Puzzle Masters Chicago</div></div>
+            </div>
+            <div class="deal-body">
+              <div class="deal-cat">Activities</div>
+              <div class="deal-title">2-Hour Escape Room Adventure (up to 6 players)</div>
+              <div class="deal-merch">Puzzle Masters Chicago · 4.7 ★ (1,104)</div>
+              <div class="deal-price-row">
+                <span class="dp-now">$28.00</span>
+                <span class="dp-was">$60.00</span>
+                <span class="dp-pct">53% off</span>
+              </div>
+              <div class="deal-reason">🔥 Popular with people like you</div>
+              <span class="rb rb-r">Non-refundable</span>
+            </div>
+          </div>
 
-    // Keyboard navigation for cards
-    feed.addEventListener("keydown", (e) => {
-      if (e.target.classList.contains("deal-card") &&
-          (e.key === "Enter" || e.key === " ")) {
-        e.preventDefault();
-        e.target.click();
-      }
-    });
-  </script>
+          <!-- card 4 · yoga -->
+          <div class="deal-card">
+            <div class="deal-img" style="background:linear-gradient(135deg,#d1fae5,#34d399 45%,#059669)">
+              <div class="deal-img-inner"><div class="di-emoji">🧘</div><div class="di-label">Flow Studio</div></div>
+            </div>
+            <div class="deal-body">
+              <div class="deal-cat">Fitness</div>
+              <div class="deal-title">10-Class Unlimited Yoga Pass</div>
+              <div class="deal-merch">Flow Studio · Lincoln Park · 4.9 ★ (667)</div>
+              <div class="deal-price-row">
+                <span class="dp-now">$79.00</span>
+                <span class="dp-was">$160.00</span>
+                <span class="dp-pct">51% off</span>
+              </div>
+              <div class="bnpl-hint">or <u>4 payments of $19.75</u> with Klarna</div>
+              <div class="deal-reason">💰 Best value deal this week</div>
+              <span class="rb rb-g">Free cancellation 48 h before</span>
+            </div>
+          </div>
 
+          <!-- card 5 · hotel -->
+          <div class="deal-card">
+            <div class="deal-img" style="background:linear-gradient(135deg,#e0f2fe,#38bdf8 45%,#0369a1)">
+              <div class="deal-img-inner"><div class="di-emoji">🏨</div><div class="di-label">The Lakeview Inn</div></div>
+            </div>
+            <div class="deal-body">
+              <div class="deal-cat">Travel</div>
+              <div class="deal-title">Weekend Getaway: 2 Nights at The Lakeview Inn</div>
+              <div class="deal-merch">The Lakeview Inn · Evanston · 4.5 ★ (318)</div>
+              <div class="deal-price-row">
+                <span class="dp-now">$149.00</span>
+                <span class="dp-was">$299.00</span>
+                <span class="dp-pct">50% off</span>
+              </div>
+              <div class="bnpl-hint">or <u>4 payments of $37.25</u> with Klarna</div>
+              <div class="deal-reason">🎯 Matches your $50–$100 budget range</div>
+              <span class="rb rb-g">Free cancellation 72 h before</span>
+            </div>
+          </div>
+
+          <!-- card 6 · cooking -->
+          <div class="deal-card" style="border-bottom:none">
+            <div class="deal-img" style="background:linear-gradient(135deg,#fef3c7,#fb923c 40%,#dc2626)">
+              <div class="deal-img-inner"><div class="di-emoji">👨‍🍳</div><div class="di-label">Chef Marco's Kitchen</div></div>
+            </div>
+            <div class="deal-body">
+              <div class="deal-cat">Food &amp; Drink</div>
+              <div class="deal-title">Farm-to-Table Cooking Class for 2</div>
+              <div class="deal-merch">Chef Marco's Kitchen · Wicker Park · 4.8 ★ (214)</div>
+              <div class="deal-price-row">
+                <span class="dp-now">$65.00</span>
+                <span class="dp-was">$120.00</span>
+                <span class="dp-pct">46% off</span>
+              </div>
+              <div class="deal-reason">🆕 New listing — just added in Chicago</div>
+              <span class="rb rb-g">Free cancellation 24 h before</span>
+            </div>
+          </div>
+
+        </div><!-- /feed -->
+      </div><!-- /screen-scroll -->
+      <!-- bottom tabs -->
+      <div class="bottom-tabs">
+        <button class="tab-btn active" onclick="switchTab(this)">
+          <svg width="22" height="22" color="#16a34a"><use href="#i-home"/></svg>Home
+        </button>
+        <button class="tab-btn" onclick="switchTab(this)">
+          <svg width="22" height="22" color="var(--g500)"><use href="#i-search"/></svg>Search
+        </button>
+        <button class="tab-btn" onclick="switchTab(this)">
+          <svg width="22" height="22" color="var(--g500)"><use href="#i-ticket"/></svg>My Groupons
+        </button>
+        <button class="tab-btn" onclick="switchTab(this)">
+          <svg width="22" height="22" color="var(--g500)"><use href="#i-support"/></svg>Support
+        </button>
+      </div>
+      <div class="home-indicator"><div class="home-bar"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SCREEN 3 · DealDetailScreen
+═══════════════════════════════════════════════════════ -->
+<div class="phone-wrapper">
+  <div class="phone-step">
+    <div class="step-num">3</div>
+    <div class="step-name">DealDetailScreen</div>
+    <div class="step-desc">InstantConfirmation · Calendar · Fine print</div>
+  </div>
+  <div class="phone-frame">
+    <div class="phone-inner">
+      <!-- white status bar overlay on hero -->
+      <div class="status-bar" style="--sb-bg:transparent;--sb-c:#fff;position:absolute;top:0;left:0;right:0;z-index:70">
+        <span class="sb-time">9:41</span>
+        <div class="dynamic-island"></div>
+        <div class="sb-icons">
+          <svg width="17" height="12" fill="#fff"><use href="#i-signal"/></svg>
+          <svg width="16" height="12" color="#fff"><use href="#i-wifi"/></svg>
+          <svg width="25" height="13" color="#fff"><use href="#i-battery"/></svg>
+        </div>
+      </div>
+      <div class="screen-scroll" style="padding-bottom:72px">
+        <!-- HeroImageCarousel -->
+        <div class="hero" style="background:linear-gradient(160deg,#f5d0fe,#c084fc 30%,#e879f9 70%,#f9a8d4)">
+          <div class="hero-inner">
+            <div class="hero-emoji">💆‍♀️</div>
+            <div class="hero-lbl">Serenity Wellness Spa</div>
+          </div>
+          <button class="hero-back">‹</button>
+          <div class="hero-counter">1 / 4</div>
+          <div class="hero-dots">
+            <div class="hd on"></div><div class="hd"></div><div class="hd"></div><div class="hd"></div>
+          </div>
+        </div>
+        <!-- title + merchant -->
+        <div class="section">
+          <h1 class="dd-title">60-min Deep Tissue Massage + Aromatherapy Facial</h1>
+          <div class="merch-row">
+            <span class="merch-name">Serenity Wellness Spa</span>
+            <span class="merch-rating">4.8 ★</span>
+            <span class="merch-reviews">(2,341 reviews)</span>
+          </div>
+          <!-- InstantConfirmationBadge -->
+          <span class="ic-badge ic-confirmed">✓ Confirmed</span>
+        </div>
+        <!-- PricingBreakdownPanel -->
+        <div class="section">
+          <div class="pricing-panel">
+            <div class="pricing-panel-hd">Price Breakdown</div>
+            <div class="pr"><span class="pl">Deal price</span><span class="pv">$89.00</span></div>
+            <div class="pr"><span class="pl">Original price</span><span class="pv" style="text-decoration:line-through;color:var(--g400)">$180.00</span></div>
+            <div class="pr"><span class="pl">Service fee</span><span class="pv">$4.45</span></div>
+            <div class="pr"><span class="pl">Tax</span><span class="pv">$8.46</span></div>
+            <div class="pr"><span class="pl">Shipping</span><span class="pv">$0.00</span></div>
+            <div class="pr tot"><span class="pl t">Total</span><span class="pv t">$101.91</span></div>
+          </div>
+        </div>
+        <!-- AvailabilityCalendar -->
+        <div class="section cal-section">
+          <h2>Choose a Date</h2>
+          <div class="cal-nav">
+            <button class="cal-nav-btn">‹</button>
+            <span class="cal-month-lbl">May 2026</span>
+            <button class="cal-nav-btn">›</button>
+          </div>
+          <div class="cal-hdr">
+            <div class="cal-dn">Su</div><div class="cal-dn">Mo</div><div class="cal-dn">Tu</div>
+            <div class="cal-dn">We</div><div class="cal-dn">Th</div><div class="cal-dn">Fr</div>
+            <div class="cal-dn">Sa</div>
+          </div>
+          <!-- May 1 2026 = Friday → 5 leading blanks -->
+          <div class="cal-grid" id="cg3">
+            <div></div><div></div><div></div><div></div><div></div>
+            <button class="cal-day unavail" disabled>1</button>
+            <button class="cal-day unavail" disabled>2</button>
+            <button class="cal-day unavail" disabled>3</button>
+            <button class="cal-day unavail" disabled>4</button>
+            <button class="cal-day unavail" disabled>5</button>
+            <button class="cal-day unavail" disabled>6</button>
+            <button class="cal-day unavail" disabled>7</button>
+            <button class="cal-day unavail" disabled>8</button>
+            <button class="cal-day unavail" disabled>9</button>
+            <button class="cal-day unavail" disabled>10</button>
+            <button class="cal-day unavail" disabled>11</button>
+            <button class="cal-day unavail" disabled>12</button>
+            <button class="cal-day unavail" disabled>13</button>
+            <button class="cal-day unavail" disabled>14</button>
+            <button class="cal-day unavail" disabled>15</button>
+            <button class="cal-day unavail" disabled>16</button>
+            <button class="cal-day unavail" disabled>17</button>
+            <button class="cal-day unavail" disabled>18</button>
+            <button class="cal-day avail" data-date="2026-05-19" onclick="pickDate(this,'cg3','cs3')">19</button>
+            <button class="cal-day avail" data-date="2026-05-20" onclick="pickDate(this,'cg3','cs3')">20</button>
+            <button class="cal-day unavail" disabled>21</button>
+            <button class="cal-day avail sel" data-date="2026-05-22" onclick="pickDate(this,'cg3','cs3')">22</button>
+            <button class="cal-day avail" data-date="2026-05-23" onclick="pickDate(this,'cg3','cs3')">23</button>
+            <button class="cal-day unavail" disabled>24</button>
+            <button class="cal-day unavail" disabled>25</button>
+            <button class="cal-day avail" data-date="2026-05-26" onclick="pickDate(this,'cg3','cs3')">26</button>
+            <button class="cal-day avail" data-date="2026-05-27" onclick="pickDate(this,'cg3','cs3')">27</button>
+            <button class="cal-day unavail" disabled>28</button>
+            <button class="cal-day avail" data-date="2026-05-29" onclick="pickDate(this,'cg3','cs3')">29</button>
+            <button class="cal-day avail" data-date="2026-05-30" onclick="pickDate(this,'cg3','cs3')">30</button>
+            <button class="cal-day unavail" disabled>31</button>
+          </div>
+          <div class="cal-sel-text" id="cs3">Selected: 2026-05-22</div>
+        </div>
+        <!-- RefundPolicyBadge -->
+        <div class="section">
+          <span class="rb rb-g">Free cancellation up to 24 h before appointment</span>
+        </div>
+        <!-- FinePrintExpander (expanded) -->
+        <div class="section" style="padding-bottom:16px">
+          <div class="fp-section">
+            <button class="fp-toggle" onclick="toggleFP(this)">
+              Terms &amp; conditions
+              <span class="fp-chev open">▾</span>
+            </button>
+            <ul class="fp-list" style="display:block">
+              <li>Valid for new customers only. One voucher per person.</li>
+              <li>Must be redeemed within 120 days of purchase.</li>
+              <li>Appointment required; subject to availability.</li>
+              <li>Service upgrades available at additional cost.</li>
+              <li>Cannot be combined with any other promotion.</li>
+              <li>Gratuity not included. 18–20% recommended.</li>
+            </ul>
+          </div>
+        </div>
+      </div><!-- /screen-scroll -->
+      <!-- sticky buy bar (PricingBreakdownPanel summary) -->
+      <div class="sticky-buy">
+        <div>
+          <span class="sticky-price">$101.91<small>total</small></span>
+        </div>
+        <button class="btn-buy">Buy Now</button>
+      </div>
+      <div class="home-indicator"><div class="home-bar"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SCREEN 4 · CheckoutScreen
+═══════════════════════════════════════════════════════ -->
+<div class="phone-wrapper">
+  <div class="phone-step">
+    <div class="step-num">4</div>
+    <div class="step-name">CheckoutScreen</div>
+    <div class="step-desc">BNPLPricingHint · Klarna selected · full breakdown</div>
+  </div>
+  <div class="phone-frame">
+    <div class="phone-inner">
+      <div class="status-bar">
+        <span class="sb-time">9:41</span>
+        <div class="dynamic-island"></div>
+        <div class="sb-icons">
+          <svg width="17" height="12" fill="#111"><use href="#i-signal"/></svg>
+          <svg width="16" height="12" color="#111"><use href="#i-wifi"/></svg>
+          <svg width="25" height="13" color="#111"><use href="#i-battery"/></svg>
+        </div>
+      </div>
+      <div class="screen-scroll" style="background:#fff">
+        <div class="section" style="padding-bottom:0">
+          <h1 style="font-size:18px;font-weight:700;color:var(--g900);margin-bottom:14px">Review Your Order</h1>
+          <!-- PricingBreakdownPanel -->
+          <div class="pricing-panel">
+            <div class="pricing-panel-hd">Price Breakdown</div>
+            <div class="pr"><span class="pl">Deal price</span><span class="pv">$89.00</span></div>
+            <div class="pr"><span class="pl">Original price</span><span class="pv" style="text-decoration:line-through;color:var(--g400)">$180.00</span></div>
+            <div class="pr"><span class="pl">Service fee</span><span class="pv">$4.45</span></div>
+            <div class="pr"><span class="pl">Tax</span><span class="pv">$8.46</span></div>
+            <div class="pr"><span class="pl">Shipping</span><span class="pv">$0.00</span></div>
+            <div class="pr tot"><span class="pl t">Total</span><span class="pv t">$101.91</span></div>
+          </div>
+        </div>
+        <!-- payment method selector -->
+        <div class="section" style="padding-top:16px">
+          <div class="section-h">Payment Method</div>
+          <label class="pay-opt" id="pay-card" onclick="selectPay('card')" style="cursor:pointer">
+            <input type="radio" name="pay4" id="r-card">
+            <div>
+              <div class="pay-title">Credit / Debit Card</div>
+              <div class="pay-sub">Pay securely · Visa, Mastercard, Amex</div>
+            </div>
+          </label>
+          <label class="pay-opt sel" id="pay-klarna" onclick="selectPay('klarna')" style="cursor:pointer">
+            <input type="radio" name="pay4" id="r-klarna" checked>
+            <div>
+              <div class="pay-title" style="display:flex;align-items:center;gap:6px">
+                Pay in installments
+                <span style="background:#ffb3c7;color:#d6006d;border-radius:4px;padding:1px 6px;font-size:11px;font-weight:700">Klarna</span>
+              </div>
+              <!-- BNPLPricingHint -->
+              <div class="pay-sub">4 × $25.48 — no interest, no fees</div>
+            </div>
+          </label>
+        </div>
+        <!-- BNPL installment breakdown box -->
+        <div class="section" id="bnpl-box4" style="padding-top:0">
+          <div class="bnpl-box">
+            <p class="bb-h">Klarna instalment plan</p>
+            <p class="bb-b">4 payments of <strong>$25.48</strong> each, every 2 weeks. No interest charged.</p>
+          </div>
+        </div>
+        <!-- RefundPolicyBadge -->
+        <div class="section" style="padding-top:0">
+          <span class="rb rb-g">Free cancellation up to 24 h before appointment</span>
+        </div>
+        <!-- Order summary -->
+        <div class="section" style="padding-top:16px">
+          <div class="section-h">Order Summary</div>
+          <div class="order-card">
+            <div class="oc-title">60-min Deep Tissue Massage + Aromatherapy Facial</div>
+            <div class="oc-merch">Serenity Wellness Spa</div>
+            <div class="oc-date">📅 Friday, 22 May 2026</div>
+            <div class="oc-total">Total: $101.91</div>
+            <!-- BNPLPricingHint inline -->
+            <div style="margin-top:5px">
+              <span class="bnpl-hint">or <u>4 payments of $25.48</u> with Klarna</span>
+            </div>
+          </div>
+        </div>
+        <!-- confirm button -->
+        <div class="section" style="padding:16px">
+          <button class="btn-confirm">Confirm &amp; Pay $101.91</button>
+        </div>
+      </div><!-- /screen-scroll -->
+      <div class="home-indicator"><div class="home-bar"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SCREEN 5 · BookingConfirmationScreen
+═══════════════════════════════════════════════════════ -->
+<div class="phone-wrapper">
+  <div class="phone-step">
+    <div class="step-num">5</div>
+    <div class="step-name">BookingConfirmationScreen</div>
+    <div class="step-desc">Purchase success · PostPurchaseHelpEntry prominent</div>
+  </div>
+  <div class="phone-frame">
+    <div class="phone-inner">
+      <div class="status-bar">
+        <span class="sb-time">9:41</span>
+        <div class="dynamic-island"></div>
+        <div class="sb-icons">
+          <svg width="17" height="12" fill="#111"><use href="#i-signal"/></svg>
+          <svg width="16" height="12" color="#111"><use href="#i-wifi"/></svg>
+          <svg width="25" height="13" color="#111"><use href="#i-battery"/></svg>
+        </div>
+      </div>
+      <div class="screen-scroll" style="background:#fff">
+        <div class="confirm-hero">
+          <div class="confirm-check">✅</div>
+          <h1 class="confirm-title">Purchase Confirmed!</h1>
+          <p class="confirm-sub">Your order has been placed successfully.</p>
+        </div>
+        <!-- order detail card -->
+        <div class="order-det-card">
+          <div>
+            <div class="od-lbl">Order ID</div>
+            <div class="od-val mono">ORDER-1747579244-48291</div>
+          </div>
+          <div>
+            <div class="od-lbl">Deal</div>
+            <div class="od-val">60-min Deep Tissue Massage + Aromatherapy Facial</div>
+            <div class="od-sub">Serenity Wellness Spa</div>
+          </div>
+          <div>
+            <div class="od-lbl">Booking Date</div>
+            <div class="od-val">Friday, 22 May 2026</div>
+          </div>
+          <div>
+            <div class="od-lbl">Amount Paid</div>
+            <div class="od-val">$101.91 <span style="font-size:12px;font-weight:400;color:var(--g500)">(Klarna ×4)</span></div>
+          </div>
+        </div>
+        <!-- add to calendar -->
+        <div style="padding:20px 16px 0">
+          <button class="btn-cal" style="width:100%;justify-content:center">📅 Add to Calendar</button>
+        </div>
+        <!-- PostPurchaseHelpEntry (confirmation_screen surface) -->
+        <div style="padding:0 16px 28px">
+          <div class="help-entry">
+            <p style="font-size:13px;color:var(--g500);margin-bottom:12px;line-height:1.45">
+              Questions about your booking? Our support team is available 24 / 7.
+            </p>
+            <button class="btn-help">
+              <span aria-hidden="true">🙋</span> Need help?
+            </button>
+          </div>
+        </div>
+      </div><!-- /screen-scroll -->
+      <!-- bottom tabs — My Groupons active -->
+      <div class="bottom-tabs">
+        <button class="tab-btn" onclick="switchTab(this)">
+          <svg width="22" height="22" color="var(--g500)"><use href="#i-home"/></svg>Home
+        </button>
+        <button class="tab-btn" onclick="switchTab(this)">
+          <svg width="22" height="22" color="var(--g500)"><use href="#i-search"/></svg>Search
+        </button>
+        <button class="tab-btn active" onclick="switchTab(this)">
+          <svg width="22" height="22" color="#16a34a"><use href="#i-ticket"/></svg>My Groupons
+        </button>
+        <button class="tab-btn" onclick="switchTab(this)">
+          <svg width="22" height="22" color="var(--g500)"><use href="#i-support"/></svg>Support
+        </button>
+      </div>
+      <div class="home-indicator"><div class="home-bar"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SCREEN 6 · VoucherCard
+═══════════════════════════════════════════════════════ -->
+<div class="phone-wrapper">
+  <div class="phone-step">
+    <div class="step-num">6</div>
+    <div class="step-name">VoucherCard</div>
+    <div class="step-desc">Voucher code · PostPurchaseHelpEntry · calendar button</div>
+  </div>
+  <div class="phone-frame">
+    <div class="phone-inner">
+      <div class="status-bar">
+        <span class="sb-time">9:41</span>
+        <div class="dynamic-island"></div>
+        <div class="sb-icons">
+          <svg width="17" height="12" fill="#111"><use href="#i-signal"/></svg>
+          <svg width="16" height="12" color="#111"><use href="#i-wifi"/></svg>
+          <svg width="25" height="13" color="#111"><use href="#i-battery"/></svg>
+        </div>
+      </div>
+      <div class="screen-scroll" style="background:var(--g50)">
+        <!-- page heading -->
+        <div style="padding:16px 16px 0">
+          <h1 style="font-size:18px;font-weight:700;color:var(--g900);margin-bottom:4px">My Groupons</h1>
+          <p style="font-size:13px;color:var(--g500)">ORDER-1747579244-48291</p>
+        </div>
+        <!-- VoucherCard component -->
+        <div style="padding:14px 16px">
+          <div class="voucher-card">
+            <div class="vc-deal">60-min Deep Tissue Massage + Aromatherapy Facial</div>
+            <div class="vc-merch">Serenity Wellness Spa · Chicago, IL</div>
+            <div class="vc-date">📅 Fri, 22 May 2026 · 2:00 PM</div>
+            <!-- confirmed badge -->
+            <div style="margin-bottom:14px">
+              <span style="display:inline-flex;align-items:center;gap:4px;background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd);border-radius:6px;padding:4px 10px;font-size:13px;font-weight:600">✓ Confirmed</span>
+            </div>
+            <!-- calendar button -->
+            <button class="btn-cal">📅 Add to calendar</button>
+            <!-- voucher code -->
+            <div class="voucher-code-box">
+              <div class="vcode-lbl">Voucher code</div>
+              <div class="vcode-val">SPA‑4829‑GRPN</div>
+            </div>
+            <!-- PostPurchaseHelpEntry (voucher_card surface) -->
+            <div class="voucher-help">
+              <p style="font-size:12px;color:var(--g500);margin-bottom:10px">Issue with this voucher? We're here to help.</p>
+              <button class="btn-help"><span aria-hidden="true">🙋</span> Need help?</button>
+            </div>
+          </div>
+        </div>
+        <!-- cancellation policy reminder -->
+        <div style="padding:0 16px 10px">
+          <div style="background:#fff;border:1px solid var(--g200);border-radius:9px;padding:12px 14px">
+            <p style="font-size:12px;color:var(--g600);font-weight:600;margin-bottom:4px">Cancellation Policy</p>
+            <p style="font-size:13px;color:var(--g500);line-height:1.45">
+              Free cancellation up to 24 hours before appointment. Cancel by <strong>21 May at 2:00 PM</strong> for a full refund.
+            </p>
+            <div style="margin-top:8px">
+              <span class="rb rb-g">Free cancellation 24 h before</span>
+            </div>
+          </div>
+        </div>
+        <!-- directions -->
+        <div style="padding:0 16px 28px">
+          <button style="width:100%;background:transparent;color:var(--g700);border:1px solid var(--g300);border-radius:9px;padding:12px;font-size:14px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px">
+            🗺️ Get directions to Serenity Wellness Spa
+          </button>
+        </div>
+      </div><!-- /screen-scroll -->
+      <!-- bottom tabs — My Groupons active -->
+      <div class="bottom-tabs">
+        <button class="tab-btn" onclick="switchTab(this)">
+          <svg width="22" height="22" color="var(--g500)"><use href="#i-home"/></svg>Home
+        </button>
+        <button class="tab-btn" onclick="switchTab(this)">
+          <svg width="22" height="22" color="var(--g500)"><use href="#i-search"/></svg>Search
+        </button>
+        <button class="tab-btn active" onclick="switchTab(this)">
+          <svg width="22" height="22" color="#16a34a"><use href="#i-ticket"/></svg>My Groupons
+        </button>
+        <button class="tab-btn" onclick="switchTab(this)">
+          <svg width="22" height="22" color="var(--g500)"><use href="#i-support"/></svg>Support
+        </button>
+      </div>
+      <div class="home-indicator"><div class="home-bar"></div></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /phones-row -->
+
+<p style="text-align:center;font-size:13px;color:#475569;margin-top:8px">
+  ← Scroll to see all 6 screens →
+</p>
+
+<!-- JAVASCRIPT ──────────────────────────────────────────── -->
+<script>
+/* Calendar — pick a date */
+function pickDate(btn, gridId, selId) {
+  var grid = document.getElementById(gridId);
+  if (!grid) return;
+  grid.querySelectorAll('.cal-day.sel').forEach(function(b){ b.classList.remove('sel'); });
+  btn.classList.add('sel');
+  var el = document.getElementById(selId);
+  if (el) el.textContent = 'Selected: ' + btn.dataset.date;
+}
+
+/* Fine print — toggle expand / collapse */
+function toggleFP(btn) {
+  var sec  = btn.closest('.fp-section');
+  var list = sec.querySelector('.fp-list');
+  var chev = btn.querySelector('.fp-chev');
+  var open = list.style.display !== 'none';
+  list.style.display = open ? 'none' : 'block';
+  chev.classList.toggle('open', !open);
+}
+
+/* Checkout — swap payment method */
+function selectPay(method) {
+  var pCard   = document.getElementById('pay-card');
+  var pKlarna = document.getElementById('pay-klarna');
+  var bnpl    = document.getElementById('bnpl-box4');
+  var rCard   = document.getElementById('r-card');
+  var rKl     = document.getElementById('r-klarna');
+  if (method === 'card') {
+    pCard.classList.add('sel');    pKlarna.classList.remove('sel');
+    if (rCard) rCard.checked = true;
+    if (bnpl)  bnpl.style.display = 'none';
+  } else {
+    pKlarna.classList.add('sel');  pCard.classList.remove('sel');
+    if (rKl)  rKl.checked = true;
+    if (bnpl) bnpl.style.display = 'block';
+  }
+}
+
+/* Bottom-tab visual switcher */
+function switchTab(btn) {
+  var bar = btn.closest('.bottom-tabs');
+  bar.querySelectorAll('.tab-btn').forEach(function(t) {
+    t.classList.remove('active');
+    var svg = t.querySelector('svg');
+    if (svg) svg.setAttribute('color', 'var(--g500)');
+  });
+  btn.classList.add('active');
+  var svg = btn.querySelector('svg');
+  if (svg) svg.setAttribute('color', '#16a34a');
+}
+</script>
 </body>
 </html>
